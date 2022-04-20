@@ -5,6 +5,7 @@ fun main(args: Array<String>) {
     while(true){
         val value = UsbPort.read()
         UsbPort.write(value)
+        // Programming in MacIos and git to gitHub
     }
     // Try adding program arguments via Run/Debug configuration.
     // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
