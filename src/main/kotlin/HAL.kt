@@ -26,8 +26,9 @@ object HAL { // visualizes the access to UsbPort system (HAL == Hardware Abstrac
 
     // writes the input value in the bits represented by mask
     fun writeBits(mask: Int, value: Int) {
-        val bitsToChange = mask and value // Select the bits we need to change
-        lastWrittenValue = lastWrittenValue or bitsToChange
+        // Mux with Mask as selector: When Mask = 1 then value, Mask = 0 then lastWrittenValue
+        // lastWrittenValue = bitsToChange or (lastWrittenValue and mask.inv())
+        lastWrittenValue = (value and mask) or (lastWrittenValue and mask.inv())
         UsbPort.write(lastWrittenValue)
     }
 
@@ -39,8 +40,9 @@ object HAL { // visualizes the access to UsbPort system (HAL == Hardware Abstrac
 
     // sets the bits sent by mask to the logical value '0'
     fun clrBits(mask: Int) {
-        val maskNANDValue = ((mask and lastWrittenValue).inv())
-        val value = (maskNANDValue and lastWrittenValue)
+        // lastWrittenValue and not mask: when mask = 1 then we clear all the bits
+        // else when mask = 0 we keep the previous value written
+        val value = mask.inv() and lastWrittenValue
         writeBits(FULL_MASK, value)
     }
 }
