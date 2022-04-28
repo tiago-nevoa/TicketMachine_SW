@@ -1,5 +1,6 @@
 import isel.leic.UsbPort
 
+// Rui teste
 fun main() {
     HAL.init()
     var mask = 0b00000001
