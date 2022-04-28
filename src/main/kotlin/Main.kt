@@ -1,8 +1,8 @@
-import isel.leic.UsbPort;
+import isel.leic.UsbPort
 
-fun main(args: Array<String>) {
+fun main() {
     HAL.init()
-    var mask = 0b00000000
+    var mask = 0b00000001
     while(mask <= 0b11111111) {
         // Thread.sleep(1000)
         HAL.setBits(mask)
@@ -19,22 +19,26 @@ object HAL { // visualizes the access to UsbPort system (HAL == Hardware Abstrac
     var value = 0b00000000
     // class initializer
     fun init() {
-        value = 0b00000000
+        value = 0b00000000 // write to board
     }
 
     // returns true if bit has the logical value 1
     fun isBit(mask: Int) : Boolean {
-        return mask == value and mask
+        val currentOut = UsbPort.read() // read the usbPort INPUT (Switch)
+        return mask == currentOut and mask
     }
 
     // returns the values of the bits represented by mask present in the UsbPort
     fun readBits(mask: Int) : Int {
-        return mask and value
+        val currentOut = UsbPort.read() // read the usbPort INPUT (Switch)
+        return mask and currentOut
     }
 
     // writes the input value in the bits represented by mask
     fun writeBits(mask: Int, value: Int) {
-        UsbPort.write(mask and value) // confirm with professor
+        val currentOut = UsbPort.read() // read the usbPort INPUT (Switch)
+        val bitsToChange = mask and value // Select the bits we need to change
+        UsbPort.write(currentOut or bitsToChange)
     }
 
     // sets the bits sent by mask to the logical value '1'
