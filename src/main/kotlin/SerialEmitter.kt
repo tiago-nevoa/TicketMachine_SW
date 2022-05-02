@@ -2,6 +2,9 @@ import isel.leic.UsbPort
 
 // the mask of the bit Busy (the first bit is 1 and the remaining are 0)
 const val BUSY_LOCATION : Int = 0x80
+const val SCLK_LOCATION : Int = 0x01
+const val SDX_LOCATION : Int = 0x02
+const val NOT_SS_LOCATION : Int = 0x04
 
 // sends block to the different Serial
 class SerialEmitter {
@@ -25,9 +28,20 @@ class SerialEmitter {
         if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1 // including bit Tnl in data to send to Ticket Dispenser
             while(!isBusy()) {
                 notSS = 0
-                SDX = dataToSend and mask
-                SDX = HAL.writeBits()
-        }
+                HAL.writeBits(notSS,NOT_SS_LOCATION)
+                SDX = dataToSend and mask // We need find way send this correctly
+                HAL.writeBits(SDX,SDX_LOCATION)
+                if(SCLK == 1){
+                    mask shl 1
+                    SCLK = 0
+                    HAL.clrBits(SCLK_LOCATION)
+                }
+                else{
+                    SCLK = 1
+                    HAL.setBits(SCLK_LOCATION)
+                }
+            }
+        init()
     }
 
     // return true if channel serial is busy (serial receiver - comes fom VHDL)
