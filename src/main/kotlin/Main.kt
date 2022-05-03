@@ -8,7 +8,7 @@ fun main() {
 
     HAL.lastWrittenValue = 0xF0
     println("lastWrittenValue = " + HAL.lastWrittenValue)
-/*
+
     // isBit Test
     println("Testing isBit...")
     println("5sec to select input...")
@@ -49,7 +49,7 @@ fun main() {
     println("starting...")
     Thread.sleep(1000)
 
-    var mask = 0x01
+    mask = 0x01
     println("mask = " + mask)
 
     while(mask <= HAL.FULL_MASK) {
@@ -87,7 +87,7 @@ fun main() {
     Thread.sleep(5000)
     println("Mask: 0x0F")
     HAL.setBits(0x0F)
- */
+
     // clrBits test
     HAL.lastWrittenValue = 0x65
     UsbPort.write(HAL.lastWrittenValue)

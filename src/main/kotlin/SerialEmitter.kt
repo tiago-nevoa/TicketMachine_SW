@@ -24,12 +24,12 @@ class SerialEmitter {
     // sends not SS, SDX, SCLK
     // sends block to SerialReceiver identifying the destination in addr field and data bits in data field
     fun send(addr: Destination, data: Int) { // sends data to LCD (HAL.write)
-        var dataToSend = data shl 1
-        if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1 // including bit Tnl in data to send to Ticket Dispenser
+        var dataToSend = data shl 1 // data[parityBit,d8..0], dataToSend[parityBit,d8..0,TnL] 11bits
+        if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1 // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
             while(!isBusy()) {
                 notSS = 0
                 HAL.writeBits(notSS,NOT_SS_LOCATION)
-                SDX = dataToSend and mask // We need find way send this correctly
+                SDX = if((dataToSend and mask) == 0) 0 else 1 // Read dataToSend From bit0 to b11
                 HAL.writeBits(SDX,SDX_LOCATION)
                 if(SCLK == 1){
                     mask shl 1
