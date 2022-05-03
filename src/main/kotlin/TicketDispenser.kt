@@ -1,16 +1,6 @@
 import isel.leic.UsbPort
 import TicketDispenser
 
-fun main() {
-    var ticketDispenser = TicketDispenser()
-    ticketDispenser.print(0b1110, 0b0010, false)
-    ticketDispenser.init()
-    ticketDispenser.print(0b0010, 0b1110, false)
-    ticketDispenser.init()
-    ticketDispenser.print(0b1001, 0b0110, true)
-    ticketDispenser.init()
-}
-
 class TicketDispenser {
     private var serialEmitter = SerialEmitter()
     private var data : Int = 0b0
@@ -22,9 +12,11 @@ class TicketDispenser {
     fun print(destinyId: Int, originId: Int, roundTrip: Boolean) {
         data = if(roundTrip) 1 else 0
         data = data or (destinyId shl 1)
-        data = data or (originId shl 5) // origin fica no meio
+        data = data or (originId shl 5)
+        println("data on TicketDispenser: " + Integer.toBinaryString(data))
+        serialEmitter.init()
+        println("serialEmitter init...")
         serialEmitter.send(SerialEmitter.Destination.TICKET_DISPENSER, data)
-        //println("data :" + Integer.toBinaryString(data))
     }
 
 }

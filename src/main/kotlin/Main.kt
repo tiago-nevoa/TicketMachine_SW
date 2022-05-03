@@ -5,7 +5,8 @@ fun main() {
     println("Hal init...")
     HAL.init()
     println("lastWrittenValue at init= " + HAL.lastWrittenValue)
-
+/*
+    //lastWrittenValue test
     HAL.lastWrittenValue = 0xF0
     println("lastWrittenValue = " + HAL.lastWrittenValue)
 
@@ -99,4 +100,11 @@ fun main() {
     Thread.sleep(5000)
     println("Mask: 0x0F")
     HAL.clrBits(0x0F)
+ */
+    // TicketDispenser test
+    var ticketDispenser = TicketDispenser()
+    ticketDispenser.print(0b0011, 0b1100, true)
+    println("ticketDispenser init...")
+    ticketDispenser.init()
+
 }

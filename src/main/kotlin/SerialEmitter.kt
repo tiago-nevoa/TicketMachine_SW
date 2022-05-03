@@ -26,13 +26,24 @@ class SerialEmitter {
     fun send(addr: Destination, data: Int) { // sends data to LCD (HAL.write)
         var dataToSend = data shl 1 // data[parityBit,d8..0], dataToSend[parityBit,d8..0,TnL] 11bits
         if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1 // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
+        println("dataToSend on SerialEmitter: " + Integer.toBinaryString(dataToSend))
+        println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
+        Thread.sleep(5000)
             while(!isBusy()) {
+                println("5sec...")
+                Thread.sleep(5000)
+                println("notSS = " + Integer.toBinaryString(notSS))
+                println("dataToSend on SerialEmitter: " + Integer.toBinaryString(dataToSend))
+                println("SDX = " + Integer.toBinaryString(SDX))
+                println("mask = " + Integer.toBinaryString(mask))
+                println("SCLK = " + Integer.toBinaryString(SCLK))
+
                 notSS = 0
                 HAL.writeBits(notSS,NOT_SS_LOCATION)
-                SDX = if((dataToSend and mask) == 0) 0 else 1 // Read dataToSend From bit0 to b11
+                SDX = if((dataToSend and mask) == 0) 0 else 1 // check why SDX is not write on Hard
                 HAL.writeBits(SDX,SDX_LOCATION)
                 if(SCLK == 1){
-                    mask shl 1
+                    mask = mask shl 1
                     SCLK = 0
                     HAL.clrBits(SCLK_LOCATION)
                 }
@@ -41,6 +52,7 @@ class SerialEmitter {
                     HAL.setBits(SCLK_LOCATION)
                 }
             }
+        println("SerialEmitter init...")
         init()
     }
 
