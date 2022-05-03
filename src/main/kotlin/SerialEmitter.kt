@@ -17,6 +17,7 @@ class SerialEmitter {
     fun init() {
         SCLK = 0
         notSS = 1
+        HAL.setBits(NOT_SS_LOCATION)
         SDX = 0
         mask = 1
     }
@@ -30,27 +31,31 @@ class SerialEmitter {
         println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
         Thread.sleep(5000)
             while(!isBusy()) {
-                println("5sec...")
-                Thread.sleep(5000)
-                println("notSS = " + Integer.toBinaryString(notSS))
-                println("dataToSend on SerialEmitter: " + Integer.toBinaryString(dataToSend))
-                println("SDX = " + Integer.toBinaryString(SDX))
-                println("mask = " + Integer.toBinaryString(mask))
-                println("SCLK = " + Integer.toBinaryString(SCLK))
+                println("1sec...")
+                Thread.sleep(1000)
+
+                println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
+                println("mask                        = " + Integer.toBinaryString(mask) )
+                println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+                println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+                println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
 
                 notSS = 0
-                HAL.writeBits(notSS,NOT_SS_LOCATION)
-                SDX = if((dataToSend and mask) == 0) 0 else 1 // check why SDX is not write on Hard
-                HAL.writeBits(SDX,SDX_LOCATION)
+                HAL.clrBits(NOT_SS_LOCATION)
+                //HAL.writeBits(notSS,NOT_SS_LOCATION) // // check why notSS is not write on Hard
+                SDX = if((dataToSend and mask) == 0) 0 else 1
+                //HAL.writeBits(SDX,SDX_LOCATION) // check why SDX is not write on Hard
+                if(SDX == 0) HAL.clrBits(SDX_LOCATION) else HAL.setBits(SDX_LOCATION)
+
                 if(SCLK == 1){
-                    mask = mask shl 1
-                    SCLK = 0
-                    HAL.clrBits(SCLK_LOCATION)
-                }
-                else{
-                    SCLK = 1
-                    HAL.setBits(SCLK_LOCATION)
-                }
+                            mask = mask shl 1
+                            SCLK = 0
+                            HAL.clrBits(SCLK_LOCATION)
+                        }
+                        else{
+                            SCLK = 1
+                            HAL.setBits(SCLK_LOCATION)
+                        }
             }
         println("SerialEmitter init...")
         init()
