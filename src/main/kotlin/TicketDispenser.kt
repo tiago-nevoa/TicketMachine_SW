@@ -10,6 +10,7 @@ class TicketDispenser {
     }
 
     fun print(destinyId: Int, originId: Int, roundTrip: Boolean) {
+        // data{orig[0..3],dest[0..3],roundTrip}
         data = if(roundTrip) 1 else 0
         data = data or (destinyId shl 1)
         data = data or (originId shl 5)
