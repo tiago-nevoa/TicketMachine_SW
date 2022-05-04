@@ -6,8 +6,7 @@ const val BUSY_LOCATION : Int = 0x80
 const val SCLK_LOCATION : Int = 0x01
 const val SDX_LOCATION : Int = 0x02
 const val NOT_SS_LOCATION : Int = 0x04
-const val FRAME_SIZE : Int = 11*2
-
+const val FRAME_SIZE : Int = 10
 
 // sends block to the different Serial
 class SerialEmitter {
@@ -33,13 +32,15 @@ class SerialEmitter {
     // sends not SS, SDX, SCLK
     // sends block to SerialReceiver identifying the destination in addr field and data bits in data field
     fun send(addr: Destination, data: Int) {
-        var dataToSend = data shl 1 // data[parityBit,d8..0], dataToSend[parityBit,d8..0,TnL] 11bits
-        if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1 // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
+        // data[parityBit,d8..0], dataToSend[parityBit,d8..0,TnL] 11bits
+        var dataToSend = data shl 1
+        // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
+        if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
         println("dataToSend on SerialEmitter: " + Integer.toBinaryString(dataToSend))
         println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
         Thread.sleep(5000)
         if(!isBusy()){
-            for (frameCounter in 0..FRAME_SIZE) {
+            for (frameCounter in 0..FRAME_SIZE*2) {
                 println("5sec...")
                 Thread.sleep(5000)
 
@@ -68,7 +69,7 @@ class SerialEmitter {
                     HAL.setBits(SCLK_LOCATION)
                 }
             }
-            }
+        }
         println("SerialEmitter init...")
         init()
     }

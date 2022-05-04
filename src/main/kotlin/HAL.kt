@@ -7,19 +7,22 @@ object HAL {
     const val FULL_MASK = 0xFF
 
     fun init() {
-        lastWrittenValue = 0b00000000// initial value (each time we init() / reset we set the value to this)
+        // initial value (each time we init() we set the value to this)
+        lastWrittenValue = 0b00000000
+        // send value to HW (saida/leds)
         UsbPort.write(lastWrittenValue)
     }
 
     // returns true if bit has the logical value 1
     fun isBit(mask: Int): Boolean {
-        val currentOut = UsbPort.read() // read the usbPort INPUT (entrada) (Switch) --- leds are the output (saída) -> não há interligação entre leds e switches **
+        // read value from HW (entrada/Switch)
+        val currentOut = UsbPort.read()
         return mask == currentOut and mask
     }
 
     // returns the values of the bits represented by mask present in the UsbPort
     fun readBits(mask: Int): Int {
-        val currentOut = UsbPort.read() // read the usbPort INPUT (Switch)
+        val currentOut = UsbPort.read()
         return mask and currentOut
     }
 
@@ -31,7 +34,7 @@ object HAL {
     }
 
     // sets the bits sent by mask to the logical value '1'
-    fun setBits(mask: Int) { // não usamos read -> guardamos numa variável o último valor que foi escrito (pois não conseguimos ler o que escrevemos!)
+    fun setBits(mask: Int) {
         lastWrittenValue = mask or lastWrittenValue
         writeBits(FULL_MASK, lastWrittenValue)
     }
