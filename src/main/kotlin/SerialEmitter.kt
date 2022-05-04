@@ -41,13 +41,13 @@ class SerialEmitter {
         Thread.sleep(5000)
         if(!isBusy()){
             for (frameCounter in 0..FRAME_SIZE*2) {
-                println("5sec...")
-                Thread.sleep(5000)
+                println("1sec...")
+                Thread.sleep(1000)
 
                 println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
                 println("mask                        = " + Integer.toBinaryString(mask))
                 println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-                println("frameCounter  = $frameCounter")
+                println("frameCounter  = ${frameCounter/2}")
                 println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
                 println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
                 println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
