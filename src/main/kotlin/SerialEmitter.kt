@@ -70,6 +70,7 @@ class SerialEmitter {
                 }
             }
         }
+        // we need make sure with last SDX the frame is par
         println("SerialEmitter init...")
         init()
     }
