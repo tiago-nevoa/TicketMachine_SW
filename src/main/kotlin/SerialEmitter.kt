@@ -81,27 +81,6 @@ class SerialEmitter {
                 println("parityCheck  = " + Integer.toBinaryString(parityCheck))
             }
 
-            println("parityCheck block:")
-            println("5sec...")
-            Thread.sleep(5000)
-            println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-            println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
-            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
-            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-
-            // ParityCheck to confirm frame correct transmission, we need make sure with last SDX the frame is par
-            SCLK = 0
-            HAL.clrBits(SCLK_LOCATION)
-
-            println("parityCheck block:")
-            println("5sec...")
-            Thread.sleep(5000)
-            println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-            println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
-            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
-            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-
-
             SDX = if (parityCheck == 0) 0 else 1
             if (SDX == 0) HAL.clrBits(SDX_LOCATION) else HAL.setBits(SDX_LOCATION)
             SCLK = 1
