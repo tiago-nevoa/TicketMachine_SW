@@ -103,17 +103,24 @@ fun main() {
  */
     // TicketDispenser test
     var ticketDispenser = TicketDispenser()
+
     ticketDispenser.print(0b0011, 0b1100, true)
+
     println("ticketDispenser init...")
     ticketDispenser.init()
 
-    ticketDispenser.print(0b1001, 0b0110, true)
+    ticketDispenser.print(0b1011, 0b0110, true)
+
     println("ticketDispenser init...")
     ticketDispenser.init()
+
     ticketDispenser.print(0b0011, 0b1100, false)
+
     println("ticketDispenser init...")
     ticketDispenser.init()
-    ticketDispenser.print(0b1001, 0b0110, false)
+
+    ticketDispenser.print(0b1011, 0b0110, false)
+
     println("ticketDispenser init...")
     ticketDispenser.init()
 

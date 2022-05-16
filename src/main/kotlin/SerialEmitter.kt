@@ -22,10 +22,10 @@ class SerialEmitter {
     fun init() {
         SCLK = 0
         HAL.clrBits(SCLK_LOCATION)
-        notSS = 1
-        HAL.setBits(NOT_SS_LOCATION)
         SDX = 0
         HAL.clrBits(SDX_LOCATION)
+        notSS = 1
+        HAL.setBits(NOT_SS_LOCATION)
         mask = 1
         parityCheck = 0
         frameCounter = 0
@@ -38,21 +38,24 @@ class SerialEmitter {
         var dataToSend = data shl 1
         // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
         if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
+
         println("dataToSend on SerialEmitter: " + Integer.toBinaryString(dataToSend))
         println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
         Thread.sleep(5000)
+
+        println("2sec...")
+        Thread.sleep(2000)
+        println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
+        println("mask                        = " + Integer.toBinaryString(mask))
+        println("frameCounter  = ${frameCounter/2}")
+        println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
+        println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+        println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+        println("parityCheck  = " + Integer.toBinaryString(parityCheck))
+
         if(!isBusy()){
             for (frameCounter in 0 until FRAME_SIZE*2) {
-                println("2sec...")
-                Thread.sleep(2000)
 
-                println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
-                println("mask                        = " + Integer.toBinaryString(mask))
-                println("frameCounter  = ${frameCounter/2}")
-                println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-                println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
-                println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
-                println("parityCheck  = " + Integer.toBinaryString(parityCheck))
                 notSS = 0
                 HAL.clrBits(NOT_SS_LOCATION)
                 SDX = if ((dataToSend and mask) == 0) 0 else 1
@@ -66,35 +69,52 @@ class SerialEmitter {
                     SCLK = 1
                     HAL.setBits(SCLK_LOCATION)
                 }
+
+                println("2sec...")
+                Thread.sleep(2000)
+                println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
+                println("mask                        = " + Integer.toBinaryString(mask))
+                println("frameCounter  = ${frameCounter/2}")
+                println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
+                println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+                println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+                println("parityCheck  = " + Integer.toBinaryString(parityCheck))
             }
+
             println("parityCheck block:")
-            println("10sec...")
-            Thread.sleep(10000)
+            println("5sec...")
+            Thread.sleep(5000)
             println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
             println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
+            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+
             // ParityCheck to confirm frame correct transmission, we need make sure with last SDX the frame is par
             SCLK = 0
             HAL.clrBits(SCLK_LOCATION)
+
             println("parityCheck block:")
-            println("10sec...")
-            Thread.sleep(10000)
+            println("5sec...")
+            Thread.sleep(5000)
             println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
             println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
+            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+
+
             SDX = if (parityCheck == 0) 0 else 1
             if (SDX == 0) HAL.clrBits(SDX_LOCATION) else HAL.setBits(SDX_LOCATION)
             SCLK = 1
             HAL.setBits(SCLK_LOCATION)
-            println("10sec...")
-            Thread.sleep(10000)
 
+            println("parityCheck block:")
+            println("5sec...")
+            Thread.sleep(5000)
             println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
             println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
+            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+
         }
         println("SerialEmitter init...")
         init()

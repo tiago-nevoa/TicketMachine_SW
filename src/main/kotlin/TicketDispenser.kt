@@ -14,9 +14,11 @@ class TicketDispenser {
         data = if(roundTrip) 1 else 0
         data = data or (destinyId shl 1)
         data = data or (originId shl 5)
+
         println("data on TicketDispenser: " + Integer.toBinaryString(data))
         serialEmitter.init()
         println("serialEmitter init...")
+
         serialEmitter.send(SerialEmitter.Destination.TICKET_DISPENSER, data)
     }
 
