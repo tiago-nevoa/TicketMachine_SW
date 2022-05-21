@@ -8,7 +8,7 @@ const val SDX_LOCATION : Int = 0x02
 const val NOT_SS_LOCATION : Int = 0x04
 const val FRAME_SIZE : Int = 10
 
-// sends block to the different Serial
+// send frames to different serial receiver modules
 class SerialEmitter {
     var SCLK = 0
     var SDX = 0
@@ -18,6 +18,7 @@ class SerialEmitter {
     var frameCounter = 0
 
     enum class Destination { LCD, TICKET_DISPENSER }
+
     // class initializer
     fun init() {
         SCLK = 0
@@ -37,24 +38,17 @@ class SerialEmitter {
         // data[d8..0], dataToSend[d8..0,TnL] 10bits
         var dataToSend = data shl 1
         // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
-        if(addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
+        if (addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
 
-        println("dataToSend on SerialEmitter: " + Integer.toBinaryString(dataToSend))
         println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
-        Thread.sleep(5000)
+        timeLapse(5000)
 
-        println("2sec...")
-        Thread.sleep(2000)
-        println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
-        println("mask                        = " + Integer.toBinaryString(mask))
-        println("frameCounter  = ${frameCounter/2}")
-        println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
-        println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
-        println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-        println("parityCheck  = " + Integer.toBinaryString(parityCheck))
+        println("toSend:")
+        checkVariables(dataToSend)
+        timeLapse(2000)
 
-        if(!isBusy()){
-            for (frameCounter in 0 until FRAME_SIZE*2) {
+        if (!isBusy()) {
+            for (frameCounter in 0 until FRAME_SIZE * 2) {
 
                 notSS = 0
                 HAL.clrBits(NOT_SS_LOCATION)
@@ -70,15 +64,9 @@ class SerialEmitter {
                     HAL.setBits(SCLK_LOCATION)
                 }
 
-                println("2sec...")
-                Thread.sleep(2000)
-                println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
-                println("mask                        = " + Integer.toBinaryString(mask))
-                println("frameCounter  = ${frameCounter/2}")
-                println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
-                println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
-                println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-                println("parityCheck  = " + Integer.toBinaryString(parityCheck))
+                println("sending:")
+                checkVariables(dataToSend)
+                timeLapse(200)
             }
 
             SDX = if (parityCheck == 0) 0 else 1
@@ -86,21 +74,28 @@ class SerialEmitter {
             SCLK = 1
             HAL.setBits(SCLK_LOCATION)
 
-            println("parityCheck block:")
-            println("5sec...")
-            Thread.sleep(5000)
-            println("parityCheck  = " + Integer.toBinaryString(parityCheck))
-            println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
-            println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
-            println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
-
+            println("parityCheck:")
+            checkVariables(dataToSend)
+            timeLapse(2000)
         }
         println("SerialEmitter init...")
         init()
     }
-
     // return true if channel serial is busy (serial receiver - comes fom VHDL)
-    fun isBusy() : Boolean {
+    fun isBusy(): Boolean {
         return HAL.isBit(BUSY_LOCATION)
+    }
+    fun timeLapse(microSeconds: Long) {
+        println("${microSeconds / 1000.0} seconds...")
+        Thread.sleep(microSeconds)
+    }
+    fun checkVariables(dataToSend: Int) {
+        println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
+        println("mask                        = " + Integer.toBinaryString(mask))
+        println("frameCounter  = ${frameCounter / 2}")
+        println("SCLK  = " + Integer.toBinaryString(SCLK) + " (SCLK : Int = 0x1)")
+        println("SDX   = " + Integer.toBinaryString(SDX) + " (SDX : Int = 0x02)")
+        println("notSS = " + Integer.toBinaryString(notSS) + " (notSS : Int = 0x04)")
+        println("parityCheck  = " + Integer.toBinaryString(parityCheck))
     }
 }
