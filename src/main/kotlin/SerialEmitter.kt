@@ -85,9 +85,9 @@ class SerialEmitter {
     fun isBusy(): Boolean {
         return HAL.isBit(BUSY_LOCATION)
     }
-    fun timeLapse(microSeconds: Long) {
-        println("${microSeconds / 1000.0} seconds...")
-        Thread.sleep(microSeconds)
+    fun timeLapse(milliSeconds: Long) {
+        println("${milliSeconds / 1000.0} seconds...")
+        Thread.sleep(milliSeconds)
     }
     fun checkVariables(dataToSend: Int) {
         println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
