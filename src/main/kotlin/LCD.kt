@@ -3,16 +3,16 @@ import kotlin.test.todo
 private const val LINES : Int = 2
 private const val COLS : Int = 16
 private const val CLEAR_DISPLAY : Int = 0x001
-private const val RETURN_HOME : Int = 0x001
+private const val RETURN_HOME : Int = 0x002
 
 class LCD {
     private var serialEmitter = SerialEmitter()
     private var frame : Int = 0b0
-    private var cursorLine = 0
-    private var cursorColumn = 0
+    private var cursorLine = 0x0
+    private var cursorColumn = 0x0
 
     private fun writeByteParallel(rs: Boolean, data: Int){
-        //frame{data[0..7],roundTrip}
+        //frame{data[0..7],RS}
         frame = if(rs) 1 else 0
         frame = (data shl 1) or frame
         println("frame on LCD: " + Integer.toBinaryString(data))
@@ -40,7 +40,7 @@ class LCD {
     }
 
     fun init(){
-
+        // TODO: 25/05/2022
     }
     fun write(c: Char){
         writeData(c.code)
@@ -53,6 +53,8 @@ class LCD {
     fun cursor(line: Int, column: Int){
         // Error scenario
         if (line >= LINES || column >= COLS) return
+        cursorLine = line
+        cursorColumn = column
         // Instuction (Set DDRAM address) set cursor on the address position, D7=1,D6..0 = cursor address
         // 0x80 put D7=1, when line difference 0 we jump 0x40 positions
         val data = 0x80 or (line*0x40 + column)
@@ -61,6 +63,8 @@ class LCD {
     }
 
     fun clean(){
+        cursorLine = 0
+        cursorColumn = 0
         writeCMD(CLEAR_DISPLAY)
     }
 
