@@ -45,7 +45,7 @@ class SerialEmitter {
 
         println("toSend:")
         checkVariables(dataToSend)
-        HAL.timeLapse(2000)
+        HAL.timeLapse(1)
 
         if (!isBusy()) {
             for (frameCounter in 0 until FRAME_SIZE * 2) {
@@ -66,7 +66,7 @@ class SerialEmitter {
 
                 println("sending:")
                 checkVariables(dataToSend)
-                HAL.timeLapse(200)
+                HAL.timeLapse(1)
             }
 
             SDX = if (parityCheck == 0) 0 else 1
@@ -76,7 +76,7 @@ class SerialEmitter {
 
             println("parityCheck:")
             checkVariables(dataToSend)
-            HAL.timeLapse(2000)
+            HAL.timeLapse(1)
         }
         println("SerialEmitter init...")
         init()
