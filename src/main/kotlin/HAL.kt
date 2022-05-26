@@ -46,4 +46,8 @@ object HAL {
         lastWrittenValue = mask.inv() and lastWrittenValue
         writeBits(FULL_MASK, lastWrittenValue)
     }
+    fun timeLapse(milliSeconds: Long) {
+        println("${milliSeconds / 1000.0} seconds...")
+        Thread.sleep(milliSeconds)
+    }
 }

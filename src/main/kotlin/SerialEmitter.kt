@@ -41,11 +41,11 @@ class SerialEmitter {
         if (addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
 
         println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
-        timeLapse(5000)
+        HAL.timeLapse(5000)
 
         println("toSend:")
         checkVariables(dataToSend)
-        timeLapse(2000)
+        HAL.timeLapse(2000)
 
         if (!isBusy()) {
             for (frameCounter in 0 until FRAME_SIZE * 2) {
@@ -66,7 +66,7 @@ class SerialEmitter {
 
                 println("sending:")
                 checkVariables(dataToSend)
-                timeLapse(200)
+                HAL.timeLapse(200)
             }
 
             SDX = if (parityCheck == 0) 0 else 1
@@ -76,7 +76,7 @@ class SerialEmitter {
 
             println("parityCheck:")
             checkVariables(dataToSend)
-            timeLapse(2000)
+            HAL.timeLapse(2000)
         }
         println("SerialEmitter init...")
         init()
@@ -84,10 +84,6 @@ class SerialEmitter {
     // return true if channel serial is busy (serial receiver - comes fom VHDL)
     fun isBusy(): Boolean {
         return HAL.isBit(BUSY_LOCATION)
-    }
-    fun timeLapse(milliSeconds: Long) {
-        println("${milliSeconds / 1000.0} seconds...")
-        Thread.sleep(milliSeconds)
     }
     fun checkVariables(dataToSend: Int) {
         println("dataToSend on SerialEmitter = " + Integer.toBinaryString(dataToSend))
