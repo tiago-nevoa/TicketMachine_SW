@@ -14,15 +14,7 @@ class LCD {
     private var cursorLine = 0x0
     private var cursorColumn = 0x0
 
-    private fun writeByteParallel(rs: Boolean, data: Int){
-        TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
-    }
-
     private fun writeByteSerial(rs: Boolean, data: Int){
-        TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
-    }
-
-    private fun writeByte(rs: Boolean, data: Int){
         //frame{data[0..7],RS}
         frame = if(rs) 1 else 0
         frame = (data shl 1) or frame
@@ -30,7 +22,10 @@ class LCD {
         serialEmitter.init()
         println("serialEmitter init...")
         serialEmitter.send(SerialEmitter.Destination.LCD, frame)
-        // TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
+    }
+
+    private fun writeByte(rs: Boolean, data: Int){
+       writeByteSerial(rs,data)
     }
 
     private fun writeCMD(data: Int){
@@ -44,7 +39,6 @@ class LCD {
     }
 
     fun init(){
-        println("LCD INIT Begin")
         HAL.timeLapse(100)
         writeCMD(0x30)
         HAL.timeLapse(10)
@@ -52,12 +46,9 @@ class LCD {
         writeCMD(0x30)
         writeCMD(0x38)
         writeCMD(DISPLAY_OFF)
-        println("LCD DISPLAY OFF")
         writeCMD(CLEAR_DISPLAY)
-        println("LCD DISPLAY CLEAN")
         writeCMD(0x06)
         writeCMD(DISPLAY_ON)
-        println("LCD INIT FINISH")
     }
     fun write(c: Char){
         writeData(c.code)

@@ -124,8 +124,13 @@ fun main() {
     println("ticketDispenser init...")
     ticketDispenser.init()
 
-    var lcdDispenser = LCD()
+    var lcdEmitter = LCD()
     println("LCD init...")
-    lcdDispenser.init()
-
+    lcdEmitter.init()
+    println("LCD Write String...")
+    lcdEmitter.write("Grupo: 2");
+    lcdEmitter.cursor(1,0);
+    lcdEmitter.write("LIC_Teste");
+    lcdEmitter.cursor(1,12);
+    lcdEmitter.write("Done");
 }
