@@ -128,9 +128,16 @@ fun main() {
     println("LCD init...")
     lcdEmitter.init()
     println("LCD Write String...")
-    lcdEmitter.write("Grupo: 2");
-    lcdEmitter.cursor(1,0);
-    lcdEmitter.write("LIC_Teste");
-    lcdEmitter.cursor(1,12);
-    lcdEmitter.write("Done");
+    lcdEmitter.write("Grupo: 2")
+    lcdEmitter.cursor(1,0)
+    lcdEmitter.write("LIC_Teste")
+    lcdEmitter.cursor(1,12)
+    lcdEmitter.write("Done")
+    HAL.timeLapse(5000)
+    lcdEmitter.clean()
+    lcdEmitter.cursor(00)
+    lcdEmitter.write("Tiago, Rui")
+    lcdEmitter.cursor(1,0)
+    lcdEmitter.write("eeeeee, Margarida!")
+
 }
