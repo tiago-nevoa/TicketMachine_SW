@@ -4,6 +4,9 @@ private const val LINES : Int = 2
 private const val COLS : Int = 16
 private const val CLEAR_DISPLAY : Int = 0x001
 private const val RETURN_HOME : Int = 0x002
+private const val DISPLAY_OFF : Int = 0x008
+// 0x00E without cursor blink, 0x00F with cursor blink
+private const val DISPLAY_ON : Int = 0x00F
 
 class LCD {
     private var serialEmitter = SerialEmitter()
@@ -12,14 +15,6 @@ class LCD {
     private var cursorColumn = 0x0
 
     private fun writeByteParallel(rs: Boolean, data: Int){
-        //frame{data[0..7],RS}
-        frame = if(rs) 1 else 0
-        frame = (data shl 1) or frame
-        println("frame on LCD: " + Integer.toBinaryString(data))
-        serialEmitter.init()
-        println("serialEmitter init...")
-        serialEmitter.send(SerialEmitter.Destination.LCD, frame)
-
         TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
     }
 
@@ -28,19 +23,37 @@ class LCD {
     }
 
     private fun writeByte(rs: Boolean, data: Int){
-        TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
+        //frame{data[0..7],RS}
+        frame = if(rs) 1 else 0
+        frame = (data shl 1) or frame
+        println("frame on LCD: " + Integer.toBinaryString(data))
+        serialEmitter.init()
+        println("serialEmitter init...")
+        serialEmitter.send(SerialEmitter.Destination.LCD, frame
+        // TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
     }
 
     private fun writeCMD(data: Int){
         writeByte(false,data)
+        HAL.timeLapse(1)
     }
 
     private fun writeData(data: Int){
         writeByte(true,data)
+        HAL.timeLapse(1)
     }
 
     fun init(){
-        // TODO: 25/05/2022
+        HAL.timeLapse(100)
+        writeCMD(0x30)
+        HAL.timeLapse(10)
+        writeCMD(0x30)
+        writeCMD(0x30)
+        writeCMD(0x38)
+        writeCMD(DISPLAY_OFF)
+        writeCMD(CLEAR_DISPLAY)
+        writeCMD(0x06)
+        writeCMD(DISPLAY_ON)
     }
     fun write(c: Char){
         writeData(c.code)
@@ -59,7 +72,6 @@ class LCD {
         // 0x80 put D7=1, when line difference 0 we jump 0x40 positions
         val data = 0x80 or (line*0x40 + column)
         writeCMD(data)
-
     }
 
     fun clean(){
