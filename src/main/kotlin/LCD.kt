@@ -44,6 +44,7 @@ class LCD {
     }
 
     fun init(){
+        println("LCD INIT Begin")
         HAL.timeLapse(100)
         writeCMD(0x30)
         HAL.timeLapse(10)
@@ -51,9 +52,12 @@ class LCD {
         writeCMD(0x30)
         writeCMD(0x38)
         writeCMD(DISPLAY_OFF)
+        println("LCD DISPLAY OFF")
         writeCMD(CLEAR_DISPLAY)
+        println("LCD DISPLAY CLEAN")
         writeCMD(0x06)
         writeCMD(DISPLAY_ON)
+        println("LCD INIT FINISH")
     }
     fun write(c: Char){
         writeData(c.code)
