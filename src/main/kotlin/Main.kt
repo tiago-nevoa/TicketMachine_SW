@@ -124,4 +124,8 @@ fun main() {
     println("ticketDispenser init...")
     ticketDispenser.init()
 
+    var lcdDispenser = LCD()
+    println("LCD init...")
+    lcdDispenser.init()
+
 }

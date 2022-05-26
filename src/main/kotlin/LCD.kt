@@ -29,7 +29,7 @@ class LCD {
         println("frame on LCD: " + Integer.toBinaryString(data))
         serialEmitter.init()
         println("serialEmitter init...")
-        serialEmitter.send(SerialEmitter.Destination.LCD, frame
+        serialEmitter.send(SerialEmitter.Destination.LCD, frame)
         // TODO("check the difference from writeByteParallel,writeByteSerial,writeByte")
     }
 
