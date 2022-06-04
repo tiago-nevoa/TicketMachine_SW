@@ -41,7 +41,7 @@ class SerialEmitter {
         if (addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
 
         println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
-        HAL.timeLapse(5000)
+        HAL.timeLapse(500)
 
         println("toSend:")
         checkVariables(dataToSend)
