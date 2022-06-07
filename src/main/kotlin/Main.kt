@@ -100,7 +100,7 @@ fun main() {
     Thread.sleep(5000)
     println("Mask: 0x0F")
     HAL.clrBits(0x0F)
- */
+
     // TicketDispenser test
     var ticketDispenser = TicketDispenser()
 
@@ -139,5 +139,6 @@ fun main() {
     lcdEmitter.write("Tiago, Rui")
     lcdEmitter.cursor(1,0)
     lcdEmitter.write("eeee, Margarida!")
-
+*/
+    
 }

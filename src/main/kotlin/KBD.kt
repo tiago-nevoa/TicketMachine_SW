@@ -21,10 +21,13 @@ class KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,
     // Immediately returns the pressed key or NONE if no key was pressed
     fun getKey(): Char {
         var key : Int = NONE
-        key += keyReceiver.rcv()
-        // when invalid keyCode key = -1
-        if (key < 0 || key > 11) return KEY_NONE
-        return KEYBOARD_TABLE[key]
+        if(!HAL.isBit((RXD_LOCATION))) {
+            key += keyReceiver.rcv()
+            // when invalid keyCode key = -1
+            if (key < 0 || key > 11) return KEY_NONE
+            return KEYBOARD_TABLE[key]
+        }
+        return KEY_NONE
     }
     // Returns when the key was pressed or NONE after timeout’ milliseconds have passed
     fun waitKey(timeout: Long): Char {
