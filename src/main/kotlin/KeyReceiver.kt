@@ -12,7 +12,7 @@ const val FRAME_KEY_CODE_LOCATION : Int = 0x1E
 
 // Receives the frame from Keyboard Reader
 class KeyReceiver {
-    var RXD = 0
+    var RXD = 1
     var RXCLK = 0
     var keyFrame = 0
     var frameCounter = 0
@@ -22,6 +22,7 @@ class KeyReceiver {
         HAL.init()
         RXCLK = 0
         HAL.clrBits(RXCLK_LOCATION)
+        RXD = 1
         keyFrame = 0
         frameCounter = 0
     }
@@ -29,37 +30,31 @@ class KeyReceiver {
     //  Receives a frame and returns the code of a key, if it exists
     fun rcv(): Int {
         // protocolo inicio leitura
-        if (HAL.isBit(RXD_LOCATION)) {
-            RXD = 1
-
-            // Criar wait Time longer that hardware clock
-            HAL.timeLapse(100)
-
-            if (!HAL.isBit(RXD_LOCATION)) {
-                RXD = 0
+        if (!HAL.isBit(RXD_LOCATION)) {
+            RXD = 0
+            RXCLK = 1
+            HAL.setBits(RXCLK_LOCATION)
+            // Leitura Key Code
+            while (frameCounter in 0 until KEY_FRAME_SIZE) {
+                RXD = if (HAL.isBit(RXD_LOCATION)) 1 else 0
+                keyFrame = keyFrame or (RXD shl frameCounter)
+                RXCLK = 0
+                HAL.clrBits(RXCLK_LOCATION)
                 RXCLK = 1
                 HAL.setBits(RXCLK_LOCATION)
-                // Leitura Key Code
-                while (frameCounter in 0 until KEY_FRAME_SIZE) {
-                    RXD = if (HAL.isBit(RXD_LOCATION)) 1 else 0
-                    keyFrame = keyFrame or (RXD shl frameCounter)
-                    RXCLK = 0
-                    HAL.clrBits(RXCLK_LOCATION)
-                    RXCLK = 1
-                    HAL.setBits(RXCLK_LOCATION)
-                }
-
             }
         }
 
         // Verificar o correcto protocolgo da trama
         if (keyFrame and FRAME_START_BIT_LOCATION == 0)
-            return -1
+            return -1 // we need solve this erro maybe or init to know stage
         else if (keyFrame and FRAME_STOP_BIT_LOCATION != 0)
-            return -1
+            return -1  // we need solve this erro maybe or init to know stage
         else keyFrame = (keyFrame and FRAME_KEY_CODE_LOCATION) shr 1
 
-        // Verificar se precisamos colocar TXclk a 0
+        // Verificar TxD = 1 to fall clock
+        while(!HAL.isBit(RXD_LOCATION)){/*wait*/}
+        RXD = 1
         RXCLK = 0
         HAL.clrBits(RXCLK_LOCATION)
 
