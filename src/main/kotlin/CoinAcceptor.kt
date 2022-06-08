@@ -16,15 +16,15 @@ class CoinAcceptor {
         private var accept = 0
         private var collect = 0
         private var eject = 0
-        var coin_value = 0
 
         // Inicia a classe
         fun init() {
-                HAL.init()
                 accept = 0
+                HAL.clrBits(ACCEPT_LOCATION)
                 collect = 0
+                HAL.clrBits(COLLECT_LOCATION)
                 eject = 0
-                coin_value = 0
+                HAL.clrBits(EJECT_LOCATION)
         }
 
         // Retorna true se foi introduzida uma nova moeda.

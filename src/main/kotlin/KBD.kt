@@ -10,7 +10,6 @@ class KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,
     private var keyReceiver = KeyReceiver()
     // Initializes the class
     fun init()  {
-        HAL.init()
         keyReceiver.init()
     }
     // Implements the parallel interaction with the Key Decode ---> TBC at ~6:30pm

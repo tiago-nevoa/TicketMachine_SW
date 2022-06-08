@@ -19,7 +19,6 @@ class KeyReceiver {
 
     // Initializes the class
     fun init() {
-        HAL.init()
         RXCLK = 0
         HAL.clrBits(RXCLK_LOCATION)
         RXD = 1
