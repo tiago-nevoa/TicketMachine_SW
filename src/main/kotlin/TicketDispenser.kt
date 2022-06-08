@@ -1,6 +1,4 @@
 import isel.leic.UsbPort
-import TicketDispenser
-
 class TicketDispenser {
     private var serialEmitter = SerialEmitter()
     private var data : Int = 0b0

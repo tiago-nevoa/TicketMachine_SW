@@ -1,10 +1,11 @@
-import kotlin.test.todo
+import isel.leic.UsbPort
 
 const val NONE = 0;
 const val KEY_NONE = NONE.toChar()
 const val GET_SERIAL = true
 const val GET_PARALLEL = !GET_SERIAL
 val KEYBOARD_TABLE : Array<Char> = arrayOf('1','4','7','*','2','5','8','0','3','6','9','#')
+
 class KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,’*’ or NONE.
     private var keyReceiver = KeyReceiver()
     // Initializes the class
