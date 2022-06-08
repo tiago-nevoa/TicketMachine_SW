@@ -47,7 +47,8 @@ class SerialEmitter {
         checkVariables(dataToSend)
         HAL.timeLapse(1)
 
-        if (!isBusy()) {
+        while (isBusy()) {/*wait*/}
+
             for (frameCounter in 0 until FRAME_SIZE * 2) {
 
                 notSS = 0
@@ -77,7 +78,7 @@ class SerialEmitter {
             println("parityCheck:")
             checkVariables(dataToSend)
             HAL.timeLapse(1)
-        }
+
         println("SerialEmitter init...")
         init()
     }

@@ -29,7 +29,9 @@ class KeyReceiver {
 
     //  Receives a frame and returns the code of a key, if it exists
     fun rcv(): Int {
+
         // protocolo inicio leitura
+        if(!HAL.isBit((RXD_LOCATION))) {
             RXD = 0
             RXCLK = 1
             HAL.setBits(RXCLK_LOCATION)
@@ -43,20 +45,27 @@ class KeyReceiver {
                 HAL.setBits(RXCLK_LOCATION)
             }
 
-        // Verificar o correcto protocolgo da trama
-        if (keyFrame and FRAME_START_BIT_LOCATION == 0)
-            return -1 // we need solve this error maybe or init to know stage
-        else if (keyFrame and FRAME_STOP_BIT_LOCATION != 0)
-            return -1  // we need solve this error maybe or init to know stage
-        else keyFrame = (keyFrame and FRAME_KEY_CODE_LOCATION) shr 1
+            // Verificar o correcto protocolgo da trama
+            if (keyFrame and FRAME_START_BIT_LOCATION == 0)
+                return -1 // we need solve this error maybe init to know stage
+            else if (keyFrame and FRAME_STOP_BIT_LOCATION != 0)
+                return -1  // we need solve this error maybe init to know stage
+            else keyFrame = (keyFrame and FRAME_KEY_CODE_LOCATION) shr 1
 
-        // Check TxD = 1 to fall clock
-        while(!HAL.isBit(RXD_LOCATION)){/*wait*/}
-        RXD = 1
-        RXCLK = 0
-        HAL.clrBits(RXCLK_LOCATION)
+            // Check TxD = 1 to fall clock
+            var time = 1000 + System.currentTimeMillis()
+            while (!HAL.isBit(RXD_LOCATION)) {
+                /*wait*/
+                if (time - System.currentTimeMillis() < 0)
+                    return -1 // we need solve this error maybe init to know stage
+            }
+            RXD = 1
+            RXCLK = 0
+            HAL.clrBits(RXCLK_LOCATION)
 
-        // return key code
-        return keyFrame
+            // return key code
+            return keyFrame
+        }
+        return -1
     }
 }

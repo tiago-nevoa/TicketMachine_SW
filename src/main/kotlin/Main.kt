@@ -123,7 +123,7 @@ fun main() {
 
     println("ticketDispenser init...")
     ticketDispenser.init()
-
+*/
     var lcdEmitter = LCD()
     println("LCD init...")
     lcdEmitter.init()
@@ -139,6 +139,6 @@ fun main() {
     lcdEmitter.write("Tiago, Rui")
     lcdEmitter.cursor(1,0)
     lcdEmitter.write("eeee, Margarida!")
-*/
-    
+
+
 }
