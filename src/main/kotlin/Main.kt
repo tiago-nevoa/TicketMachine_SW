@@ -139,9 +139,9 @@ fun main() {
     lcdEmitter.write("Tiago, Rui e,")
     lcdEmitter.cursor(1,0)
     lcdEmitter.write("Ana Margarida!")
-*/
 
 
+    ------------------------------------ TEST KeyReceiver --------------------------------------
     var kbd = KBD()
     kbd.init()
     var lcdEmitter = LCD()
@@ -150,11 +150,31 @@ fun main() {
     lcdEmitter.init()
 
     while(keyPressed != '#') {
-
         keyPressed = kbd.waitKey(5000)
         println("returned key: $keyPressed")
         println("LCD Write String...")
         lcdEmitter.write(keyPressed)
     }
+    ------------------------------------ TEST KeyReceiver --------------------------------------
+ */
+
+    //------------------------------------ TEST CoinAcceptor --------------------------------------
+    var lcdEmitter = LCD()
+    lcdEmitter.init()
+    var coinAcceptor = CoinAcceptor()
+    coinAcceptor.init()
+    var coin : Int = 0
+    while(coin != 200) {
+        if(coinAcceptor.hasCoin()) {
+            coin = coinAcceptor.getCoinValue()
+            coinAcceptor.acceptCoin()
+            println(coin)
+            coinAcceptor.ejectCoins()
+        }
+    }
+    coinAcceptor.collectCoins()
+    lcdEmitter.write(coin.toString())
+    //------------------------------------ TEST CoinAcceptor --------------------------------------
+
 
 }

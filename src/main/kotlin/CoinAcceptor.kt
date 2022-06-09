@@ -33,7 +33,7 @@ class CoinAcceptor {
 
         // Retorna o valor facial da moeda introduzida.
         fun getCoinValue(): Int {
-               return COIN_TABLE[HAL.readBits(CIDATA_LOCATION) shr 6]
+               return COIN_TABLE[HAL.readBits(CIDATA_LOCATION)]
         }
 
         // Informa o moedeiro que a moeda foi contabilizada.
