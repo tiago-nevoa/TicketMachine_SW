@@ -40,12 +40,12 @@ class SerialEmitter {
         // including bit Tnl = 0 LCD, TnL = 1 TICKET_DISPENSER
         if (addr == Destination.TICKET_DISPENSER) dataToSend = dataToSend or 1
 
-        println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
-        HAL.timeLapse(500)
+        //println("Put isBusy at false in 5sec... (BUSY_LOCATION : Int = 0x80)")
+        //HAL.timeLapse(500)
 
-        println("toSend:")
-        checkVariables(dataToSend)
-        HAL.timeLapse(1)
+        //println("toSend:")
+        //checkVariables(dataToSend)
+       // HAL.timeLapse(1)
 
         while (isBusy()) {/*wait*/}
 
@@ -65,9 +65,9 @@ class SerialEmitter {
                     HAL.setBits(SCLK_LOCATION)
                 }
 
-                println("sending:")
-                checkVariables(dataToSend)
-                HAL.timeLapse(1)
+               // println("sending:")
+                //checkVariables(dataToSend)
+                //HAL.timeLapse(1)
             }
 
             SDX = if (parityCheck == 0) 0 else 1
@@ -75,9 +75,9 @@ class SerialEmitter {
             SCLK = 1
             HAL.setBits(SCLK_LOCATION)
 
-            println("parityCheck:")
-            checkVariables(dataToSend)
-            HAL.timeLapse(1)
+            //println("parityCheck:")
+            //checkVariables(dataToSend)
+            //HAL.timeLapse(1)
 
         println("SerialEmitter init...")
         init()

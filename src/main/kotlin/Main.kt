@@ -100,8 +100,8 @@ fun main() {
     Thread.sleep(5000)
     println("Mask: 0x0F")
     HAL.clrBits(0x0F)
-
-    // TicketDispenser test
+*/
+    //------------------------------------ TicketDispenser test --------------------------------------
     var ticketDispenser = TicketDispenser()
 
     ticketDispenser.print(0b0011, 0b1100, true)
@@ -123,7 +123,9 @@ fun main() {
 
     println("ticketDispenser init...")
     ticketDispenser.init()
+    //------------------------------------ TicketDispenser test --------------------------------------
 
+/*
     var lcdEmitter = LCD()
     println("LCD init...")
     lcdEmitter.init()
@@ -156,7 +158,6 @@ fun main() {
         lcdEmitter.write(keyPressed)
     }
     ------------------------------------ TEST KeyReceiver --------------------------------------
- */
 
     //------------------------------------ TEST CoinAcceptor --------------------------------------
     var lcdEmitter = LCD()
@@ -175,6 +176,8 @@ fun main() {
     coinAcceptor.collectCoins()
     lcdEmitter.write(coin.toString())
     //------------------------------------ TEST CoinAcceptor --------------------------------------
+*/
+
 
 
 }

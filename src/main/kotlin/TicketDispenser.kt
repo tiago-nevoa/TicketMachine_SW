@@ -13,7 +13,7 @@ class TicketDispenser {
         data = data or (destinyId shl 1)
         data = data or (originId shl 5)
 
-        println("data on TicketDispenser: " + Integer.toBinaryString(data))
+        //println("data on TicketDispenser: " + Integer.toBinaryString(data))
         serialEmitter.init()
         println("serialEmitter init...")
 
