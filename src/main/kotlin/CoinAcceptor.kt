@@ -1,13 +1,12 @@
-import isel.leic.UsbPort
 
 //input Locations
-const val COIN_LOCATION : Int = 0x020
-const val CIDATA_LOCATION : Int = 0x1C0
+const val COIN_LOCATION : Int = 0x08
+const val CIDATA_LOCATION : Int = 0x07
 
 //output Locations
-const val ACCEPT_LOCATION : Int = 0x020
-const val COLLECT_LOCATION : Int = 0x080
-const val EJECT_LOCATION : Int = 0x040
+const val ACCEPT_LOCATION : Int = 0x20
+const val COLLECT_LOCATION : Int = 0x40
+const val EJECT_LOCATION : Int = 0x80
 
 val COIN_TABLE : Array<Int> = arrayOf(5,10,20,50,100,200)
 

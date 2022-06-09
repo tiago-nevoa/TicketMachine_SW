@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="TicketMachine">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/TicketMachine.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

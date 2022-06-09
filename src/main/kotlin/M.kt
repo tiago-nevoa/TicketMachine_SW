@@ -1,7 +1,7 @@
 import isel.leic.UsbPort
 
 //input Locations
-const val M_LOCATION : Int = 0x010
+const val M_LOCATION : Int = 0x80
 
 class M {
 
@@ -10,7 +10,7 @@ class M {
       return
     }
 
-    // Retorna true a chave manutecao estiver activa.
+    // Retorna true se chave manutecao estiver activa.
     fun maintenanceActive(): Boolean {
         return HAL.isBit(M_LOCATION)
     }
