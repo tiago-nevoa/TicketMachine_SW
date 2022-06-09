@@ -35,6 +35,8 @@ class KeyReceiver {
             RXCLK = 1
             HAL.setBits(RXCLK_LOCATION)
             // Leitura Key Code
+            frameCounter = 0
+            keyFrame = 0
             while (frameCounter in 0 until KEY_FRAME_SIZE) {
                 RXD = if (HAL.isBit(RXD_LOCATION)) 1 else 0
                 keyFrame = keyFrame or (RXD shl frameCounter)
@@ -42,6 +44,7 @@ class KeyReceiver {
                 HAL.clrBits(RXCLK_LOCATION)
                 RXCLK = 1
                 HAL.setBits(RXCLK_LOCATION)
+                frameCounter++
             }
 
             // Verificar o correcto protocolgo da trama

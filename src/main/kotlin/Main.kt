@@ -123,7 +123,7 @@ fun main() {
 
     println("ticketDispenser init...")
     ticketDispenser.init()
-*/
+
     var lcdEmitter = LCD()
     println("LCD init...")
     lcdEmitter.init()
@@ -139,6 +139,22 @@ fun main() {
     lcdEmitter.write("Tiago, Rui e,")
     lcdEmitter.cursor(1,0)
     lcdEmitter.write("Ana Margarida!")
+*/
 
+
+    var kbd = KBD()
+    kbd.init()
+    var lcdEmitter = LCD()
+    var keyPressed = 'A'
+    println("LCD init...")
+    lcdEmitter.init()
+
+    while(keyPressed != '#') {
+
+        keyPressed = kbd.waitKey(5000)
+        println("returned key: $keyPressed")
+        println("LCD Write String...")
+        lcdEmitter.write(keyPressed)
+    }
 
 }
