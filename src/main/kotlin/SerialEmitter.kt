@@ -1,11 +1,11 @@
 import isel.leic.UsbPort
 
 //input Locations
-const val BUSY_LOCATION : Int = 0x80
+const val BUSY_LOCATION : Int = 0x40
 //output Locations
-const val SCLK_LOCATION : Int = 0x01
+const val SCLK_LOCATION : Int = 0x04
 const val SDX_LOCATION : Int = 0x02
-const val NOT_SS_LOCATION : Int = 0x04
+const val NOT_SS_LOCATION : Int = 0x08
 const val FRAME_SIZE : Int = 10
 
 // send frames to different serial receiver modules

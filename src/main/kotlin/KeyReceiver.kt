@@ -1,9 +1,9 @@
 import isel.leic.UsbPort
 
 //input Locations
-const val RXD_LOCATION : Int = 0x80
+const val RXD_LOCATION : Int = 0x20
 //output Locations
-const val RXCLK_LOCATION : Int = 0x01
+const val RXCLK_LOCATION : Int = 0x10
 
 const val KEY_FRAME_SIZE : Int = 6
 const val FRAME_START_BIT_LOCATION : Int = 0x01

@@ -1,5 +1,4 @@
 import isel.leic.UsbPort
-
 // visualizes the access to UsbPort system (HAL == Hardware Abstraction Layer)
 object HAL {
     // class initializer

@@ -1,4 +1,4 @@
-import isel.leic.UsbPort
+
 
 fun main() {
 
@@ -136,9 +136,9 @@ fun main() {
     HAL.timeLapse(5000)
     lcdEmitter.clean()
     lcdEmitter.cursor(0,0)
-    lcdEmitter.write("Tiago, Rui")
+    lcdEmitter.write("Tiago, Rui e,")
     lcdEmitter.cursor(1,0)
-    lcdEmitter.write("eeee, Margarida!")
+    lcdEmitter.write("Ana Margarida!")
 
 
 }
