@@ -15,6 +15,7 @@ class CoinAcceptor {
         private var accept = 0
         private var collect = 0
         private var eject = 0
+        private var totalCoins = 0
 
         // Inicia a classe
         fun init() {

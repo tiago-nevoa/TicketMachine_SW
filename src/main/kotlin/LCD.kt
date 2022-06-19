@@ -69,6 +69,10 @@ class LCD {
         writeCMD(data)
     }
 
+    fun newLine() {
+        this.cursor(1,0)
+    }
+
     fun clean(){
         cursorLine = 0
         cursorColumn = 0

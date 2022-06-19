@@ -5,6 +5,18 @@ fun main() {
     println("Hal init...")
     HAL.init()
     println("lastWrittenValue at init= " + HAL.lastWrittenValue)
+
+    var m = M()
+    var lcdEmitter = LCD()
+    println("LCD init...")
+    lcdEmitter.init()
+    var ticketDispenser = TicketDispenser()
+    var kbd = KBD()
+    kbd.init()
+    var coinAcceptor = CoinAcceptor()
+    coinAcceptor.init()
+    val tui = TUI(lcdEmitter,m,kbd,coinAcceptor,ticketDispenser);
+    tui.waitingScreen()
 /*
     //lastWrittenValue test
     HAL.lastWrittenValue = 0xF0
@@ -101,7 +113,7 @@ fun main() {
     println("Mask: 0x0F")
     HAL.clrBits(0x0F)
 */
-    //------------------------------------ TicketDispenser test --------------------------------------
+/*    //------------------------------------ TicketDispenser test --------------------------------------
     var ticketDispenser = TicketDispenser()
 
     ticketDispenser.print(0b0011, 0b1100, true)
@@ -124,8 +136,8 @@ fun main() {
     println("ticketDispenser init...")
     ticketDispenser.init()
     //------------------------------------ TicketDispenser test --------------------------------------
-
-/*
+*/
+/* //------------------------------------ LCD test --------------------------------------
     var lcdEmitter = LCD()
     println("LCD init...")
     lcdEmitter.init()
@@ -141,7 +153,7 @@ fun main() {
     lcdEmitter.write("Tiago, Rui e,")
     lcdEmitter.cursor(1,0)
     lcdEmitter.write("Ana Margarida!")
-
+    //------------------------------------ LCD test --------------------------------------
 
     ------------------------------------ TEST KeyReceiver --------------------------------------
     var kbd = KBD()
@@ -177,6 +189,7 @@ fun main() {
     lcdEmitter.write(coin.toString())
     //------------------------------------ TEST CoinAcceptor --------------------------------------
 */
+
 
 
 
