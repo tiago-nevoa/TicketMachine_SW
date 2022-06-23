@@ -8,6 +8,7 @@ class Stations {
     var price:Int = 0
     var id:Int = 0
     var name:String = ""
+    var roundtrip:Boolean = false
 
     fun loadStations() {
             val file = FileAccess()

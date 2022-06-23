@@ -18,6 +18,7 @@ class App() {
     var tui = TUI()
     var stations = Stations()
     var coinDeposit = CoinDeposit()
+    var selectedStation = Stations()
 
     fun init() {
         println("Hal init...") // should not be used here
@@ -26,10 +27,10 @@ class App() {
         coinAcceptor.init()
         tui.init()
         stations.loadStations()
-        waitingScreen()
+        ScreenWaiting()
     }
 
-    fun waitingScreen() {
+    fun ScreenWaiting() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
         while (true) {
             tui.WriteInitialMenuLCD()
@@ -56,41 +57,80 @@ class App() {
     }
 
     private fun ScreenSelectStation() {
-        StationScreen('0') // show the first station by default
-        finish = false
+        ScreenStation('0') // show the first station by default
         var lastKey = '0'
         while(!finish){
             when (val k = tui.WaitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
                 //'*' -> alternateSelectionMode()
-                //'#' -> ScreenPayTicket()
+                '#' -> ScreenPayTicket()
                 else -> {
                     val twoKeys = lastKey.toString()+k.toString()
-                    StationScreen(twoKeys)
+                    ScreenStation(twoKeys)
                     lastKey=k
                 }
             }
         }
     }
 
-    private fun StationScreen(k:Char) {
+    private fun ScreenStation(k:Char) {
         val stationIdx = charToInt(k)
-        println("Station IDX " + stationIdx)
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
+        selectedStation = station
+        tui.WriteStationInfo(station.name, stationIdx.toString(), station.price.toString())
+    }
+    private fun ScreenStation(str:String) {
+        val stationIdx = GetStationIdx(str)
+        val lst = stations.getAllStations()
+        val station = lst[stationIdx]
+        selectedStation = station
         tui.WriteStationInfo(station.name, stationIdx.toString(), station.price.toString())
     }
 
-    private fun StationScreen(str:String) {
+    private fun GetStationIdx(str:String):Int {
         var stationIdx = str.toInt()
-        println("Station IDX " + stationIdx)
         val lst = stations.getAllStations()
-        var station = lst[charToInt(str[1])]
-        if(stationIdx < lst.size)
-            station = lst[stationIdx]
-        else
+        if(stationIdx >= lst.size)
             stationIdx = charToInt(str[1])
-        tui.WriteStationInfo(station.name, stationIdx.toString(), station.price.toString())
+        return stationIdx
+    }
+
+    private fun ScreenPayTicket() {
+        tui.PayScreenLCD(selectedStation.name, false, selectedStation.price.toString()) // default pay screen with roundtrip false
+        while(!finish){
+            when (val k = tui.WaitKey(WAIT_SELECTION)){
+                KEY_NONE -> return
+                '0' -> {
+                    AlternateRoundTrip()
+                    UpdateTripPrice()
+                    tui.PayScreenLCD(selectedStation.name, selectedStation.roundtrip, selectedStation.price.toString())
+                }
+                '#' -> {
+                    tui.AbortVendingLCD()
+                    // wait x seconds
+                    //tui.WriteInitialMenuLCD()
+                    return
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+        }
+    }
+
+    private fun UpdateTripPrice() {
+        if(selectedStation.roundtrip == false)
+            selectedStation.price = selectedStation.price/2
+        else
+            selectedStation.price = selectedStation.price*2
+    }
+
+    private fun AlternateRoundTrip() {
+        if(selectedStation.roundtrip == false)
+            selectedStation.roundtrip = true
+        else
+            selectedStation.roundtrip = false
     }
 
     private fun charToInt(c:Char): Int {

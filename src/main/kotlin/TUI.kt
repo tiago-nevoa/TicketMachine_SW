@@ -48,7 +48,21 @@ class TUI() {
         lcd.clean()
         lcd.write(title)
         lcd.newLine()
-        lcd.write("${bottomLeft}    ${bottomRight}")
+        lcd.write("${bottomLeft}            ${bottomRight}")
+    }
+
+    fun AbortVendingLCD() {
+        lcd.clean()
+        lcd.write("Vending aborted")
+    }
+
+    fun PayScreenLCD(title:String,roundtrip:Boolean,middle: String) {
+        lcd.clean()
+        lcd.write(title)
+        lcd.newLine()
+        var bottomLeft = ""
+        if(roundtrip) bottomLeft = "1" else bottomLeft="0"
+        lcd.write("${bottomLeft}      ${middle}")
     }
 
 }
