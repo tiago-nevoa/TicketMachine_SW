@@ -12,60 +12,43 @@ class TUI() {
     private var originstation: Int? = null
     private var roundTrip = false
     private var finish = false
+    var lcd = LCD()
+    var kbd = KBD()
 
     fun init() {
-        var lcdEmitter = LCD()
-        lcdEmitter.init()
-
-        var kbd = KBD()
+        lcd.init()
         kbd.init()
     }
-/*
-    fun waitingScreen() {
+
+    fun WriteInitialMenuLCD() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
-        while (true) {
-            finish = false
-            lcd.clean()
-            lcd.write("Ticket to Ride")
-            lcd.newLine()
-            //lcd.write("Press #")
-
-            var currentDate = dateFormat.format(Date())
-            lcd.write(currentDate.toString())
-
-            while (!finish) {
-                if (m.maintenanceActive()) {
-                    //ScreenMaintenance()
-                }
-                if (kbd.getKey() == '#') {
-                    ScreenSelectStation()
-                }
-
-                // Update the date label if it's different from the last date
-                val newcurrentDate = dateFormat.format(Date())
-                if (newcurrentDate != currentDate) {
-                    lcd.newLine()
-                    lcd.write(newcurrentDate.toString())
-                    currentDate = newcurrentDate
-                }
-
-            }
-        }
-    }
-
-    private fun ScreenSelectStation(){
-        //inputSelection('0')
         finish = false
-        while(!finish){
-            when (val k = kbd.waitKey(WAIT_SELECTION)){
-                KEY_NONE -> return
-                //'*' -> alternateSelectionMode()
-                //'#' -> ScreenPayTicket()
-                // else -> inputSelection(k)
-                //else -> selectionMode(k)
-            }
-        }
+        lcd.clean()
+        lcd.write("Ticket to Ride")
+        //lcd.write("Press #")
+
+        var currentDate = dateFormat.format(Date())
+        WriteDateLCD(currentDate.toString())
     }
 
-*/
+    fun GetKey(): Char {
+        return kbd.getKey()
+    }
+
+    fun WaitKey(time:Long):Char {
+        return kbd.waitKey(time)
+    }
+
+    fun WriteDateLCD(newcurrentDate:String) {
+        lcd.newLine()
+        lcd.write(newcurrentDate.toString())
+    }
+
+    fun WriteStationInfo(title:String, bottomLeft:String, bottomRight:String) {
+        lcd.clean()
+        lcd.write(title)
+        lcd.newLine()
+        lcd.write("${bottomLeft}    ${bottomRight}")
+    }
+
 }
