@@ -1,22 +1,10 @@
-
+import main.kotlin.CoinDeposit
+import main.kotlin.Stations
 
 fun main() {
-
-    println("Hal init...")
-    HAL.init()
-    println("lastWrittenValue at init= " + HAL.lastWrittenValue)
-
-    var m = M()
-    var lcdEmitter = LCD()
-    println("LCD init...")
-    lcdEmitter.init()
-    var ticketDispenser = TicketDispenser()
-    var kbd = KBD()
-    kbd.init()
-    var coinAcceptor = CoinAcceptor()
-    coinAcceptor.init()
-    val tui = TUI(lcdEmitter,m,kbd,coinAcceptor,ticketDispenser);
-    tui.waitingScreen()
+    val app = App();
+    app.init()
+    //app.waitingScreen()
 /*
     //lastWrittenValue test
     HAL.lastWrittenValue = 0xF0

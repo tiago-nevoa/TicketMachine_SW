@@ -1,24 +1,34 @@
 import isel.leic.utils.Time
+import main.kotlin.CoinDeposit
+import main.kotlin.Stations
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.system.exitProcess
 
-//const val WAIT_SELECTION = 5000L // ms
-//data class Station(val price:Int, var counter:Int, val name:String)
+const val WAIT_SELECTION = 5000L // ms
 
-class TUI() {
-
+class App() {
     private var originstation: Int? = null
     private var roundTrip = false
     private var finish = false
 
     fun init() {
-        var lcdEmitter = LCD()
-        lcdEmitter.init()
+        println("Hal init...")
+        HAL.init()
+        println("lastWrittenValue at init= " + HAL.lastWrittenValue)
 
-        var kbd = KBD()
-        kbd.init()
+        var m = M()
+        var coinAcceptor = CoinAcceptor()
+        coinAcceptor.init()
+        var ticketDispenser = TicketDispenser()
+        var tui = TUI()
+        var stations = Stations()
+        stations.loadStations()
+        var coinDeposit = CoinDeposit()
+        stations.loadStations()
+
+
     }
 /*
     fun waitingScreen() {
