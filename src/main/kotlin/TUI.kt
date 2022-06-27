@@ -48,7 +48,7 @@ class TUI() {
         lcd.clean()
         lcd.write(title)
         lcd.newLine()
-        lcd.write("${bottomLeft}            ${bottomRight}")
+        lcd.write("${bottomLeft}           ${bottomRight}")
     }
 
     fun AbortVendingLCD() {
@@ -65,4 +65,10 @@ class TUI() {
         lcd.write("${bottomLeft}      ${middle}")
     }
 
+    fun WriteTitleBottomLCD(title:String, bottomText:String) {
+        lcd.clean()
+        lcd.write(title)
+        lcd.newLine()
+        lcd.write(bottomText)
+    }
 }

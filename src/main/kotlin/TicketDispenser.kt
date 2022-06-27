@@ -20,5 +20,9 @@ class TicketDispenser {
         serialEmitter.send(SerialEmitter.Destination.TICKET_DISPENSER, data)
     }
 
+    fun ticketCollected(): Boolean {
+        return serialEmitter.isBusy()
+    }
+
 }
 

@@ -15,7 +15,7 @@ class CoinAcceptor {
         private var accept = 0
         private var collect = 0
         private var eject = 0
-        private var totalCoins = 0
+        public var totalCoins = 0
 
         // Inicia a classe
         fun init() {
@@ -51,6 +51,7 @@ class CoinAcceptor {
                 eject = 1
                 HAL.setBits(EJECT_LOCATION)
                 HAL.timeLapse(2000)
+                totalCoins = 0
                 eject = 0
                 HAL.clrBits(EJECT_LOCATION)
         }
@@ -60,6 +61,7 @@ class CoinAcceptor {
                 collect = 1
                 HAL.setBits(COLLECT_LOCATION)
                 HAL.timeLapse(2000)
+                totalCoins = 0
                 collect = 0
                 HAL.clrBits(COLLECT_LOCATION)
         }

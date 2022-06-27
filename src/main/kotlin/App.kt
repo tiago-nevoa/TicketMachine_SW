@@ -9,7 +9,7 @@ import kotlin.system.exitProcess
 const val WAIT_SELECTION = 5000L // ms
 
 class App() {
-    private var originstation: Int? = null
+    private var originStation: Int = 6
     private var roundTrip = false
     private var finish = false
     var m = M()
@@ -26,7 +26,8 @@ class App() {
         println("lastWrittenValue at init= " + HAL.lastWrittenValue)
         coinAcceptor.init()
         tui.init()
-        stations.loadStations()
+        stations.init()
+        coinDeposit.init()
         ScreenWaiting()
     }
 
@@ -63,7 +64,10 @@ class App() {
             when (val k = tui.WaitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
                 //'*' -> alternateSelectionMode()
-                '#' -> ScreenPayTicket()
+                '#' -> {
+                    ScreenPayTicket()
+                    return
+                }
                 else -> {
                     val twoKeys = lastKey.toString()+k.toString()
                     ScreenStation(twoKeys)
@@ -78,6 +82,7 @@ class App() {
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
         selectedStation = station
+        selectedStation.id = stationIdx
         tui.WriteStationInfo(station.name, stationIdx.toString(), station.price.toString())
     }
     private fun ScreenStation(str:String) {
@@ -85,6 +90,7 @@ class App() {
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
         selectedStation = station
+        selectedStation.id = stationIdx
         tui.WriteStationInfo(station.name, stationIdx.toString(), station.price.toString())
     }
 
@@ -99,8 +105,28 @@ class App() {
     private fun ScreenPayTicket() {
         tui.PayScreenLCD(selectedStation.name, false, selectedStation.price.toString()) // default pay screen with roundtrip false
         while(!finish){
-            when (val k = tui.WaitKey(WAIT_SELECTION)){
-                KEY_NONE -> return
+            if(coinAcceptor.hasCoin()) {
+                val insertedCoin = coinAcceptor.getCoinValue()
+                coinDeposit.coinAmounts[insertedCoin] = coinDeposit.coinAmounts[insertedCoin]?.plus(1) // increase coin amount
+                coinAcceptor.totalCoins += insertedCoin
+                coinAcceptor.acceptCoin()
+                //selectedStation.price -= insertedCoin
+                val subCoins = selectedStation.price - coinAcceptor.totalCoins
+                if(subCoins <= 0) {
+                    CollectTicket()
+                    selectedStation.counter++
+                    stations.updateToFile() // save stations to txt. Fazemos aqui e nao no shutdown porque se a energia for abaixo perdiam-se os valores todos
+                    coinDeposit.updateToFile() // save coins to txt
+                    coinAcceptor.collectCoins() // collect and reset total coins
+                    return
+                } else {
+                    tui.PayScreenLCD(selectedStation.name, selectedStation.roundtrip, subCoins.toString())
+                }
+            }
+
+            //when (val k = tui.WaitKey(WAIT_SELECTION)){
+            when (val k = tui.GetKey()){ // no timeout
+                //KEY_NONE -> return
                 '0' -> {
                     AlternateRoundTrip()
                     UpdateTripPrice()
@@ -108,15 +134,24 @@ class App() {
                 }
                 '#' -> {
                     tui.AbortVendingLCD()
-                    // wait x seconds
-                    //tui.WriteInitialMenuLCD()
+                    coinAcceptor.ejectCoins()
+                    coinDeposit.readFile()
                     return
                 }
                 else -> {
                     // do nothing
                 }
             }
+
         }
+    }
+
+    private fun CollectTicket() {
+        tui.WriteTitleBottomLCD(selectedStation.name, "Collect Ticket")
+        ticketDispenser.print(selectedStation.id,originStation,selectedStation.roundtrip)
+        while(ticketDispenser.ticketCollected()) {/*wait*/}
+        tui.WriteTitleBottomLCD("Thank you :)","Have a nice trip")
+        // save and go back to main screen after collecting ticket
     }
 
     private fun UpdateTripPrice() {
