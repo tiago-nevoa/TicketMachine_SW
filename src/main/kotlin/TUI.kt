@@ -71,4 +71,13 @@ class TUI() {
         lcd.newLine()
         lcd.write(bottomText)
     }
+
+    fun WritemMaintenanceOptions(bottomText: String){
+        lcd.clean()
+        lcd.write("Maintenance Mode")
+        lcd.newLine()
+        lcd.write(bottomText)
+    }
+
+
 }

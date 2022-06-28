@@ -8,6 +8,7 @@ import java.util.*
 import kotlin.system.exitProcess
 
 const val WAIT_SELECTION = 5000L // ms
+const val WAIT_MAINTENANCE = 2000L // ms
 
 class App() {
     private var originStation: Int = 6
@@ -38,9 +39,11 @@ class App() {
             var currentDate = dateFormat.format(Date())
 
             while (!finish) {
-                //if (m.maintenanceActive()) {
-                //ScreenMaintenance()
-                //}
+
+                if (m.maintenanceActive()) {
+                    ScreenMaintenance()
+                }
+
                 if (tui.GetKey() == '#') {
                     ScreenSelectStation()
                     tui.WriteInitialMenuLCD()
@@ -55,6 +58,47 @@ class App() {
 
             }
         }
+    }
+
+/* ---------- Maintenance Section ---------- */
+
+    private fun ScreenMaintenance() {
+        var option = 1
+        while(!finish){
+            when (val k = tui.WaitKey(WAIT_MAINTENANCE)){
+                '1' -> printTicket()
+                '2' -> stationCnt()
+                '3' -> coinsCnt()
+                '4' -> resetCnt()
+                '5' -> shutdown()
+                //KEY_NONE -> continue
+                KEY_NONE -> {
+                    tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(option))
+                    option ++
+                    if(option > 5) {option = 1}
+                }
+            }
+        }
+    }
+
+    private fun printTicket() {
+        tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(1))
+    }
+
+    private fun stationCnt() {
+        tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(2))
+    }
+
+    private fun coinsCnt() {
+        tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(3))
+    }
+
+    private fun resetCnt() {
+        tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(4))
+    }
+
+    private fun shutdown() {
+        tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(5))
     }
 
     private fun ScreenSelectStation() {
