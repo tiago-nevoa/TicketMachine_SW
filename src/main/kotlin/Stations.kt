@@ -37,6 +37,7 @@ class Stations {
         val fileAccess = FileAccess()
         val pw = fileAccess.createWriter("stations.txt")
         for(station in allStations) {
+            station.roundtrip = false
             pw.println("${station.price};${station.counter};${station.name}") // formato coin;count (50;0)
         }
         pw.close() // fechar processo de escrita
