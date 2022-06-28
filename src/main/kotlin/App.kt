@@ -11,7 +11,6 @@ const val WAIT_SELECTION = 5000L // ms
 
 class App() {
     private var originStation: Int = 6
-    private var roundTrip = false
     private var finish = false
     var m = M()
     var coinAcceptor = CoinAcceptor()
@@ -118,7 +117,7 @@ class App() {
                 if(subCoins <= 0) {
                     CollectTicket()
                     selectedStation.counter++
-                    if(selectedStation.roundtrip) { allStations[6].counter++ } // TESTE
+                    if(selectedStation.roundtrip) { allStations[originStation].counter++ } // TESTE
                     stations.updateToFile() // save stations to txt. Fazemos aqui e nao no shutdown porque se a energia for abaixo perdiam-se os valores todos
                     coinDeposit.updateToFile() // save coins to txt
                     coinAcceptor.collectCoins() // collect and reset total coins
@@ -138,6 +137,7 @@ class App() {
                     tui.PayScreenLCD(selectedStation.name, selectedStation.roundtrip, finalPrice.toString()) // TESTE
                 }
                 '#' -> {
+                    stations.roundTripReset()
                     tui.AbortVendingLCD()
                     coinAcceptor.ejectCoins()
                     coinDeposit.readFile()
