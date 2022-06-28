@@ -1,6 +1,7 @@
 import isel.leic.utils.Time
 import main.kotlin.CoinDeposit
 import main.kotlin.Stations
+import main.kotlin.allStations
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -111,10 +112,13 @@ class App() {
                 coinAcceptor.totalCoins += insertedCoin
                 coinAcceptor.acceptCoin()
                 //selectedStation.price -= insertedCoin
-                val subCoins = selectedStation.price - coinAcceptor.totalCoins
+                var priceToCharge = selectedStation.price // TESTE
+                if(selectedStation.roundtrip) { priceToCharge = selectedStation.price * 2} // TESTE
+                val subCoins = priceToCharge - coinAcceptor.totalCoins // TESTE
                 if(subCoins <= 0) {
                     CollectTicket()
                     selectedStation.counter++
+                    if(selectedStation.roundtrip) { allStations[6].counter++ } // TESTE
                     stations.updateToFile() // save stations to txt. Fazemos aqui e nao no shutdown porque se a energia for abaixo perdiam-se os valores todos
                     coinDeposit.updateToFile() // save coins to txt
                     coinAcceptor.collectCoins() // collect and reset total coins
@@ -129,8 +133,9 @@ class App() {
                 //KEY_NONE -> return
                 '0' -> {
                     AlternateRoundTrip()
-                    UpdateTripPrice()
-                    tui.PayScreenLCD(selectedStation.name, selectedStation.roundtrip, selectedStation.price.toString())
+                    val priceToChange = selectedStation.price // TESTE
+                    val finalPrice = UpdateTripPrice(priceToChange) // TESTE
+                    tui.PayScreenLCD(selectedStation.name, selectedStation.roundtrip, finalPrice.toString()) // TESTE
                 }
                 '#' -> {
                     tui.AbortVendingLCD()
@@ -154,13 +159,15 @@ class App() {
         // save and go back to main screen after collecting ticket
     }
 
-    private fun UpdateTripPrice() {
-        if(selectedStation.roundtrip == false)
-            selectedStation.price = selectedStation.price/2
-        else
-            selectedStation.price = selectedStation.price*2
+    private fun UpdateTripPrice(price : Int) : Int {
+        var price = price // TESTE
+        if(!selectedStation.roundtrip) { // TESTE
+            price = selectedStation.price // TESTE
+            return price // TESTE
+        }
+        price = selectedStation.price*2 // TESTE
+        return price // TESTE
     }
-
     private fun AlternateRoundTrip() {
         if(selectedStation.roundtrip == false)
             selectedStation.roundtrip = true
