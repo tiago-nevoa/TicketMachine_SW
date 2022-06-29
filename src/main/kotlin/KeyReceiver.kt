@@ -11,10 +11,10 @@ const val FRAME_KEY_CODE_LOCATION : Int = 0x1E
 
 // Receives the frame from Keyboard Reader
 object KeyReceiver {
-    var RXD = 1
-    var RXCLK = 0
-    var keyFrame = 0
-    var frameCounter = 0
+    private var RXD = 1
+    private var RXCLK = 0
+    private var keyFrame = 0
+    private var frameCounter = 0
 
     // Initializes the class
     fun init() {
