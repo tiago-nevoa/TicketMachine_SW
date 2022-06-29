@@ -1,4 +1,3 @@
-import isel.leic.UsbPort
 
 private const val LINES : Int = 2
 private const val COLS : Int = 16
@@ -9,7 +8,6 @@ private const val DISPLAY_OFF : Int = 0x008
 private const val DISPLAY_ON : Int = 0x00F
 
 class LCD {
-    private var serialEmitter = SerialEmitter()
     private var frame : Int = 0b0
     private var cursorLine = 0x0
     private var cursorColumn = 0x0
@@ -19,9 +17,9 @@ class LCD {
         frame = if(rs) 1 else 0
         frame = (data shl 1) or frame
         println("frame on LCD: " + Integer.toBinaryString(data))
-        serialEmitter.init()
+        SerialEmitter.init()
         println("serialEmitter init...")
-        serialEmitter.send(SerialEmitter.Destination.LCD, frame)
+        SerialEmitter.send(SerialEmitter.Destination.LCD, frame)
     }
 
     private fun writeByte(rs: Boolean, data: Int){
