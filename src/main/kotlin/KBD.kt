@@ -1,18 +1,18 @@
 
-const val NONE = 0;
+const val NONE = 0
 const val KEY_NONE = NONE.toChar()
 const val GET_SERIAL = true
 const val GET_PARALLEL = !GET_SERIAL
-val KEYBOARD_TABLE : Array<Char> = arrayOf('1','4','7','*','2','5','8','0','3','6','9','#')
+val KEYBOARD_TABLE : Array<Char> = arrayOf('1','4','7','*','2','5','8','0','3','6','9','#',)
 
-object KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,’*’ or NONE.
+// Read keys from keyboard. Methods return ‘0’..’9’,’#’,’*’ or NONE.
+object KBD {
     // Initializes the class
     fun init()  {
         KeyReceiver.init()
     }
     // Implements the parallel interaction with the Key Decode ---> TBC at ~6:30pm
     private fun getKeyParallel(): Char {
-        TODO(/*get key directly from KeyDecode */)
         return KEY_NONE
     }
     //  Implements the serial interaction with the Key Transmitter
@@ -34,7 +34,7 @@ object KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’
     }
     // Returns when the key was pressed or NONE after timeout’ milliseconds have passed
     fun waitKey(timeout: Long): Char {
-        var time = timeout + System.currentTimeMillis()
+        val time = timeout + System.currentTimeMillis()
         while(time-System.currentTimeMillis() > 0) {
             val key = getKey()
             if (key != KEY_NONE) return key
@@ -43,7 +43,7 @@ object KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’
     }
 
     fun waitKeyMaintenance(timeout: Long): Char { // TESTE
-        var time = timeout + System.currentTimeMillis()
+        val time = timeout + System.currentTimeMillis()
         while(time-System.currentTimeMillis() > 0) {
             val key = getKey()
             if (key != KEY_NONE && key in '1'..'5') return key
