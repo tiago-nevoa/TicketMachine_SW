@@ -18,6 +18,7 @@ object KeyReceiver {
 
     // Initializes the class
     fun init() {
+        HAL.init()
         RXCLK = 0
         HAL.clrBits(RXCLK_LOCATION)
         RXD = 1
@@ -27,7 +28,6 @@ object KeyReceiver {
 
     //  Receives a frame and returns the code of a key, if it exists
     fun rcv(): Int {
-
         // protocolo inicio leitura
         if(!HAL.isBit((RXD_LOCATION))) {
             RXD = 0
@@ -54,7 +54,7 @@ object KeyReceiver {
             else keyFrame = (keyFrame and FRAME_KEY_CODE_LOCATION) shr 1
 
             // Check TxD = 1 to fall clock
-            var time = 1000 + System.currentTimeMillis()
+            val time = 1000 + System.currentTimeMillis()
             while (!HAL.isBit(RXD_LOCATION)) {
                 /*wait*/
                 if (time - System.currentTimeMillis() < 0)
