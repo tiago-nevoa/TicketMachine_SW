@@ -8,17 +8,18 @@ const val ACCEPT_LOCATION : Int = 0x20
 const val COLLECT_LOCATION : Int = 0x40
 const val EJECT_LOCATION : Int = 0x80
 
-val COIN_TABLE : Array<Int> = arrayOf(5,10,20,50,100,200)
+val COIN_TABLE : Array<Int> = arrayOf(5,10,20,50,100,200,0,0)
 
 // Implementa a interface com o moedeiro.
 class CoinAcceptor {
         private var accept = 0
         private var collect = 0
         private var eject = 0
-        public var totalCoins = 0
+        var totalCoins = 0
 
         // Inicia a classe
         fun init() {
+                HAL.init()
                 accept = 0
                 HAL.clrBits(ACCEPT_LOCATION)
                 collect = 0

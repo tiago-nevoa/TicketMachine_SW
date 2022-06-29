@@ -3,13 +3,18 @@ import isel.leic.UsbPort
 object HAL {
     // class initializer
     var lastWrittenValue = 0b00000000
+    var initFlag = false
     const val FULL_MASK = 0xFF
 
     fun init() {
+        // we only init one time
+        if (initFlag) return
         // initial value (each time we init() we set the value to this)
         lastWrittenValue = 0b00000000
         // send value to HW (saida/leds)
         UsbPort.write(lastWrittenValue)
+        // we advise the system that we already init
+        initFlag = true
     }
 
     // returns true if bit has the logical value 1
