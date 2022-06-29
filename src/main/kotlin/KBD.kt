@@ -1,4 +1,3 @@
-import isel.leic.UsbPort
 
 const val NONE = 0;
 const val KEY_NONE = NONE.toChar()
@@ -6,11 +5,10 @@ const val GET_SERIAL = true
 const val GET_PARALLEL = !GET_SERIAL
 val KEYBOARD_TABLE : Array<Char> = arrayOf('1','4','7','*','2','5','8','0','3','6','9','#')
 
-class KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,’*’ or NONE.
-    private var keyReceiver = KeyReceiver()
+object KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,’*’ or NONE.
     // Initializes the class
     fun init()  {
-        keyReceiver.init()
+        KeyReceiver.init()
     }
     // Implements the parallel interaction with the Key Decode ---> TBC at ~6:30pm
     private fun getKeyParallel(): Char {
@@ -20,7 +18,7 @@ class KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’,
     //  Implements the serial interaction with the Key Transmitter
     private fun getKeySerial(): Char {
         var key : Int = NONE
-        key += keyReceiver.rcv()
+        key += KeyReceiver.rcv()
 
         // when invalid keyCode key = -1
         if (key < 0 || key > 11) return KEY_NONE

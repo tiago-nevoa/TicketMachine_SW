@@ -2,12 +2,12 @@
 private const val LINES : Int = 2
 private const val COLS : Int = 16
 private const val CLEAR_DISPLAY : Int = 0x001
-private const val RETURN_HOME : Int = 0x002
+//private const val RETURN_HOME : Int = 0x002
 private const val DISPLAY_OFF : Int = 0x008
 // 0x00E without cursor blink, 0x00F with cursor blink
 private const val DISPLAY_ON : Int = 0x00F
 
-class LCD {
+object LCD {
     private var frame : Int = 0b0
     private var cursorLine = 0x0
     private var cursorColumn = 0x0
@@ -16,9 +16,6 @@ class LCD {
         //frame{data[0..7],RS}
         frame = if(rs) 1 else 0
         frame = (data shl 1) or frame
-        println("frame on LCD: " + Integer.toBinaryString(data))
-        SerialEmitter.init()
-        println("serialEmitter init...")
         SerialEmitter.send(SerialEmitter.Destination.LCD, frame)
     }
 
@@ -28,18 +25,20 @@ class LCD {
 
     private fun writeCMD(data: Int){
         writeByte(false,data)
-        HAL.timeLapse(1)
+        Thread.sleep(1)
     }
 
     private fun writeData(data: Int){
         writeByte(true,data)
-        HAL.timeLapse(1)
+        Thread.sleep(1)
     }
 
     fun init(){
-        HAL.timeLapse(100)
+        SerialEmitter.init()
+        // LCD init requirements (quick reference guide)
+        Thread.sleep(100)
         writeCMD(0x30)
-        HAL.timeLapse(10)
+        Thread.sleep(10)
         writeCMD(0x30)
         writeCMD(0x30)
         writeCMD(0x38)
@@ -76,5 +75,4 @@ class LCD {
         cursorColumn = 0
         writeCMD(CLEAR_DISPLAY)
     }
-
 }

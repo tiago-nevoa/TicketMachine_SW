@@ -58,7 +58,7 @@ object SerialEmitter {
         serialEmitterReset()
     }
     // return true if channel serial is busy (serial receiver - comes fom VHDL)
-    private fun isBusy(): Boolean {
+    fun isBusy(): Boolean {
         return HAL.isBit(BUSY_LOCATION)
     }
 

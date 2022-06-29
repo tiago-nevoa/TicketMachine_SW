@@ -1,4 +1,3 @@
-import isel.leic.UsbPort
 
 //input Locations
 const val RXD_LOCATION : Int = 0x20
@@ -11,7 +10,7 @@ const val FRAME_STOP_BIT_LOCATION : Int = 0x20
 const val FRAME_KEY_CODE_LOCATION : Int = 0x1E
 
 // Receives the frame from Keyboard Reader
-class KeyReceiver {
+object KeyReceiver {
     var RXD = 1
     var RXCLK = 0
     var keyFrame = 0

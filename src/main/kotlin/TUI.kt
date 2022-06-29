@@ -7,24 +7,22 @@ import kotlin.system.exitProcess
 //const val WAIT_SELECTION = 5000L // ms
 //data class Station(val price:Int, var counter:Int, val name:String)
 
-class TUI() {
+object TUI {
 
     private var originstation: Int? = null
     private var roundTrip = false
     private var finish = false
-    var lcd = LCD()
-    var kbd = KBD()
 
     fun init() {
-        lcd.init()
-        kbd.init()
+        LCD.init()
+        KBD.init()
     }
 
     fun WriteInitialMenuLCD() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
         finish = false
-        lcd.clean()
-        lcd.write("Ticket to Ride")
+        LCD.clean()
+        LCD.write("Ticket to Ride")
         //lcd.write("Press #")
 
         var currentDate = dateFormat.format(Date())
@@ -32,51 +30,51 @@ class TUI() {
     }
 
     fun GetKey(): Char {
-        return kbd.getKey()
+        return KBD.getKey()
     }
 
     fun WaitKey(time:Long):Char {
-        return kbd.waitKey(time)
+        return KBD.waitKey(time)
     }
 
     fun WriteDateLCD(newcurrentDate:String) {
-        lcd.newLine()
-        lcd.write(newcurrentDate.toString())
+        LCD.newLine()
+        LCD.write(newcurrentDate.toString())
     }
 
     fun WriteStationInfo(title:String, bottomLeft:String, bottomRight:String) {
-        lcd.clean()
-        lcd.write(title)
-        lcd.newLine()
-        lcd.write("${bottomLeft}           ${bottomRight}")
+        LCD.clean()
+        LCD.write(title)
+        LCD.newLine()
+        LCD.write("${bottomLeft}           ${bottomRight}")
     }
 
     fun AbortVendingLCD() {
-        lcd.clean()
-        lcd.write("Vending aborted")
+        LCD.clean()
+        LCD.write("Vending aborted")
     }
 
     fun PayScreenLCD(title:String,roundtrip:Boolean,middle: String) {
-        lcd.clean()
-        lcd.write(title)
-        lcd.newLine()
+        LCD.clean()
+        LCD.write(title)
+        LCD.newLine()
         var bottomLeft = ""
         if(roundtrip) bottomLeft = "1" else bottomLeft="0"
-        lcd.write("${bottomLeft}      ${middle}")
+        LCD.write("${bottomLeft}      ${middle}")
     }
 
     fun WriteTitleBottomLCD(title:String, bottomText:String) {
-        lcd.clean()
-        lcd.write(title)
-        lcd.newLine()
-        lcd.write(bottomText)
+        LCD.clean()
+        LCD.write(title)
+        LCD.newLine()
+        LCD.write(bottomText)
     }
 
     fun WritemMaintenanceOptions(bottomText: String){
-        lcd.clean()
-        lcd.write("Maintenance Mode")
-        lcd.newLine()
-        lcd.write(bottomText)
+        LCD.clean()
+        LCD.write("Maintenance Mode")
+        LCD.newLine()
+        LCD.write(bottomText)
     }
 
 

@@ -1,9 +1,9 @@
-import isel.leic.UsbPort
-class TicketDispenser {
-    private var serialEmitter = SerialEmitter()
+
+object TicketDispenser {
     private var data : Int = 0b0
 
     fun init() {
+        SerialEmitter.init()
         data = 0b0
     }
 
@@ -13,15 +13,11 @@ class TicketDispenser {
         data = data or (destinyId shl 1)
         data = data or (originId shl 5)
 
-        //println("data on TicketDispenser: " + Integer.toBinaryString(data))
-        serialEmitter.init()
-        println("serialEmitter init...")
-
-        serialEmitter.send(SerialEmitter.Destination.TICKET_DISPENSER, data)
+        SerialEmitter.send(SerialEmitter.Destination.TICKET_DISPENSER, data)
     }
 
     fun ticketCollected(): Boolean {
-        return serialEmitter.isBusy()
+        return SerialEmitter.isBusy()
     }
 
 }
