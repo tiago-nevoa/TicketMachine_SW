@@ -81,6 +81,7 @@ class App() {
 
     private fun coinsCnt() {
         TUI.writemMaintenanceOptions(M.maintenanceOptionsMenu(3))
+        screenSelectCoin()
     }
 
     private fun resetCnt() {
@@ -99,7 +100,7 @@ class App() {
         while(!finish){
             when (val k = TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
-                //'*' -> alternateSelectionMode()
+                '*' -> {}
                 '#' -> {
                     screenPayTicket()
                     return
@@ -210,6 +211,33 @@ class App() {
 
     private fun charToInt(c:Char): Int {
         return c.code - '0'.code
+    }
+
+    private fun screenSelectCoin() {
+        screenCoinAmount('0')
+        while(!finish){
+            when (val k = TUI.waitKey(WAIT_SELECTION)){
+                KEY_NONE -> return
+                '#' -> screenMaintenance()
+                else -> {
+                    screenCoinAmount(k)
+                }
+            }
+        }
+    }
+
+    private fun screenCoinAmount(keyPressed : Char) {
+        var keyPressed = keyPressed
+        var coinFacialValue : Int = 0
+        if(keyPressed !in '1'..'5') {
+            coinFacialValue = 5
+            keyPressed = '0'
+        }
+            else {
+           coinFacialValue = CoinDeposit.coinValues[keyPressed]!!
+        }
+        val amount = CoinDeposit.coinAmounts[coinFacialValue]
+        TUI.WriteCoinInfo(coinFacialValue, amount, keyPressed)
     }
 
 }
