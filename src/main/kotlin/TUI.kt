@@ -25,7 +25,7 @@ object TUI {
         LCD.write("Ticket to Ride")
         //lcd.write("Press #")
 
-        var currentDate = dateFormat.format(Date())
+        val currentDate = dateFormat.format(Date())
         WriteDateLCD(currentDate.toString())
     }
 
@@ -35,6 +35,10 @@ object TUI {
 
     fun WaitKey(time:Long):Char {
         return KBD.waitKey(time)
+    }
+
+    fun WaitMaintenanceKey(time:Long):Char { // TESTE
+        return kbd.waitKeyMaintenance(time)
     }
 
     fun WriteDateLCD(newcurrentDate:String) {

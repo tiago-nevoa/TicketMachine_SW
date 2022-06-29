@@ -41,4 +41,13 @@ object KBD { // Read keys from keyboard. Methods return ‘0’..’9’,’#’
         }
         return KEY_NONE
     }
+
+    fun waitKeyMaintenance(timeout: Long): Char { // TESTE
+        var time = timeout + System.currentTimeMillis()
+        while(time-System.currentTimeMillis() > 0) {
+            val key = getKey()
+            if (key != KEY_NONE && key in '1'..'5') return key
+        }
+        return KEY_NONE
+    }
 }

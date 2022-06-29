@@ -65,13 +65,13 @@ class App() {
     private fun ScreenMaintenance() {
         var option = 1
         while(!finish){
-            when (val k = tui.WaitKey(WAIT_MAINTENANCE)){
+            when (val k = tui.WaitMaintenanceKey(WAIT_MAINTENANCE)){ // TESTE
+            // when (val k = tui.WaitKey(WAIT_MAINTENANCE)){
                 '1' -> printTicket()
                 '2' -> stationCnt()
                 '3' -> coinsCnt()
                 '4' -> resetCnt()
                 '5' -> shutdown()
-                //KEY_NONE -> continue
                 KEY_NONE -> {
                     tui.WritemMaintenanceOptions(m.maintenanceOptionsMenu(option))
                     option ++
