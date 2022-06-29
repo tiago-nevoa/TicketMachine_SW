@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 //const val WAIT_SELECTION = 5000L // ms
 //data class Station(val price:Int, var counter:Int, val name:String)
@@ -76,5 +77,18 @@ object TUI {
         LCD.write("Maintenance Mode")
         LCD.newLine()
         LCD.write(bottomText)
+    }
+
+    fun WriteCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
+        LCD.clean()
+        var number = String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
+        val centering1 = ((number+" euros").length + 16)/2-1
+        LCD.cursor(0,centering1)
+        LCD.write(number + " euros")
+        LCD.newLine()
+        LCD.write("0${keyPressed}")
+        val centering2 = ("${amount}".length + 16)/2-1
+        LCD.cursor(1,centering2)
+        LCD.write("${amount}")
     }
 }
