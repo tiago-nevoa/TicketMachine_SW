@@ -1,9 +1,11 @@
-package main.kotlin
-
 import java.io.File
 import java.io.PrintWriter
 
-class FileAccess {
+object FileAccess {
+
+    fun init() {
+        // todo
+    }
     fun readLines(fileName:String) : List<String> {
         val lines = File(fileName).readLines()
         return lines
@@ -12,6 +14,4 @@ class FileAccess {
     fun createWriter(fileName: String?): PrintWriter {
         return PrintWriter(fileName)
     }
-
-
 }
