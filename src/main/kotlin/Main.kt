@@ -1,5 +1,3 @@
-import main.kotlin.CoinDeposit
-import main.kotlin.Stations
 
 fun main() {
     // INICIALIZAR TUDO AQUI E PASSAR COMO ARGUMENTO?? - confirmar com prof

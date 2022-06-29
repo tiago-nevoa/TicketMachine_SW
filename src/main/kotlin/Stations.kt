@@ -45,7 +45,7 @@ class Stations {
         }
     }
 
-        // used in maintenance mode
+    // used in maintenance mode
     fun resetCounter() {
         for (station in allStations) {
             station.counter = 0

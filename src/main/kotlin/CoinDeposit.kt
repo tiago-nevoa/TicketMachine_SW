@@ -7,7 +7,7 @@ object CoinDeposit {
     }
 
     // used in maintenance mode
-    private fun readFile() {
+    fun readFile() {
         val lines = FileAccess.readLines("CoinDeposit.txt")
         for (line in lines) {
             val values = line.split(';') // coin value;coin count
@@ -22,7 +22,7 @@ object CoinDeposit {
     }
 
     // used after purchase
-    private fun updateToFile() {
+    fun updateToFile() {
         val pw = FileAccess.createWriter("CoinDeposit.txt")
         // formato coin;count (50;0)
         for(coin in coinAmounts) pw.println("${coin.key};${coin.value}")
