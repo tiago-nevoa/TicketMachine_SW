@@ -1,8 +1,5 @@
-import isel.leic.utils.Time
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.system.exitProcess
 
 //const val WAIT_SELECTION = 5000L // ms
 //data class Station(val price:Int, var counter:Int, val name:String)
@@ -80,6 +77,4 @@ object TUI {
         LCD.newLine()
         LCD.write(bottomText)
     }
-
-
 }
