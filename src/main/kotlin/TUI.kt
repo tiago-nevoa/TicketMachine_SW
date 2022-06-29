@@ -15,7 +15,7 @@ object TUI {
         KBD.init()
     }
 
-    fun WriteInitialMenuLCD() {
+    fun writeInitialMenuLCD() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
         finish = false
         LCD.clean()
@@ -23,39 +23,39 @@ object TUI {
         //lcd.write("Press #")
 
         val currentDate = dateFormat.format(Date())
-        WriteDateLCD(currentDate.toString())
+        writeDateLCD(currentDate.toString())
     }
 
-    fun GetKey(): Char {
+    fun getKey(): Char {
         return KBD.getKey()
     }
 
-    fun WaitKey(time:Long):Char {
+    fun waitKey(time:Long):Char {
         return KBD.waitKey(time)
     }
 
-    fun WaitMaintenanceKey(time:Long):Char { // TESTE
+    fun waitMaintenanceKey(time:Long):Char { // TESTE
         return KBD.waitKeyMaintenance(time)
     }
 
-    fun WriteDateLCD(newcurrentDate:String) {
+    fun writeDateLCD(newcurrentDate:String) {
         LCD.newLine()
         LCD.write(newcurrentDate.toString())
     }
 
-    fun WriteStationInfo(title:String, bottomLeft:String, bottomRight:String) {
+    fun writeStationInfo(title:String, bottomLeft:String, bottomRight:String) {
         LCD.clean()
         LCD.write(title)
         LCD.newLine()
         LCD.write("${bottomLeft}           ${bottomRight}")
     }
 
-    fun AbortVendingLCD() {
+    fun abortVendingLCD() {
         LCD.clean()
         LCD.write("Vending aborted")
     }
 
-    fun PayScreenLCD(title:String,roundtrip:Boolean,middle: String) {
+    fun payScreenLCD(title:String,roundtrip:Boolean,middle: String) {
         LCD.clean()
         LCD.write(title)
         LCD.newLine()
@@ -64,14 +64,14 @@ object TUI {
         LCD.write("${bottomLeft}      ${middle}")
     }
 
-    fun WriteTitleBottomLCD(title:String, bottomText:String) {
+    fun writeTitleBottomLCD(title:String, bottomText:String) {
         LCD.clean()
         LCD.write(title)
         LCD.newLine()
         LCD.write(bottomText)
     }
 
-    fun WritemMaintenanceOptions(bottomText: String){
+    fun writemMaintenanceOptions(bottomText: String){
         LCD.clean()
         LCD.write("Maintenance Mode")
         LCD.newLine()
