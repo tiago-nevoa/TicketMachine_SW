@@ -38,7 +38,7 @@ object TUI {
     }
 
     fun WaitMaintenanceKey(time:Long):Char { // TESTE
-        return kbd.waitKeyMaintenance(time)
+        return KBD.waitKeyMaintenance(time)
     }
 
     fun WriteDateLCD(newcurrentDate:String) {

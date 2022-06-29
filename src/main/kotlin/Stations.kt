@@ -48,4 +48,12 @@ class Stations {
             station.roundtrip = false
         }
     }
+
+        // used in maintenance mode
+    fun resetCounter() {
+        for (station in allStations) {
+            station.counter = 0
+        }
+        updateToFile()
+    }
 }

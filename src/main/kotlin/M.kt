@@ -8,7 +8,7 @@ const val OPTION_3 = "3-Coins Cnt."
 const val OPTION_4 = "4-Reset Cnt."
 const val OPTION_5 = "5-Shutdown"
 
-class M {
+object M {
 
     // Inicia a classe
     fun init(){

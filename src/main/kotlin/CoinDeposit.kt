@@ -25,6 +25,14 @@ class CoinDeposit {
         updateToFile()
     }
 
+     // used in maintenance mode
+    fun countCoins() {
+        for ((key, _) in coinAmounts) {
+            coinAmounts[key] = 0
+        }
+        updateToFile()
+    }
+
     // used after purchase
     fun updateToFile() {
         val fileAccess = FileAccess()
@@ -34,8 +42,5 @@ class CoinDeposit {
         }
         pw.close() // fechar processo de escrita
     }
-
-
-
 
 }
