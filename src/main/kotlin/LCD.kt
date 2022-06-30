@@ -75,4 +75,17 @@ object LCD {
         cursorColumn = 0
         writeCMD(CLEAR_DISPLAY)
     }
+
+    fun writeCenteredText(text: String, line: Int) {
+        val textLength = text.length
+        val middle = (textLength + COLS)/2 - textLength
+        LCD.cursor(line,middle)
+        LCD.write(text)
+    }
+
+    fun writeBottomRight(text: String, line: Int) {
+        val bottomRight = COLS - text.length
+        LCD.cursor(line,bottomRight)
+        LCD.write(text)
+    }
 }

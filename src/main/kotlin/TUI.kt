@@ -48,7 +48,8 @@ object TUI {
         LCD.clean()
         LCD.write(title)
         LCD.newLine()
-        LCD.write("${bottomLeft}           ${bottomRight}")
+        LCD.write("${bottomLeft}")
+        LCD.writeBottomRight("${bottomRight}", 1)
     }
 
     fun abortVendingLCD() {
@@ -62,7 +63,8 @@ object TUI {
         LCD.newLine()
         var bottomLeft = ""
         if(roundtrip) bottomLeft = "1" else bottomLeft="0"
-        LCD.write("${bottomLeft}      ${middle}")
+        LCD.write(bottomLeft)
+        LCD.writeCenteredText(middle, 1)
     }
 
     fun writeTitleBottomLCD(title:String, bottomText:String) {
@@ -72,7 +74,7 @@ object TUI {
         LCD.write(bottomText)
     }
 
-    fun writemMaintenanceOptions(bottomText: String){
+    fun writeMaintenanceOptions(bottomText: String){
         LCD.clean()
         LCD.write("Maintenance Mode")
         LCD.newLine()
@@ -81,14 +83,18 @@ object TUI {
 
     fun WriteCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
         LCD.clean()
-        var number = String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
-        val centering1 = ((number+" euros").length + 16)/2-1
-        LCD.cursor(0,centering1)
-        LCD.write(number + " euros")
+        val roundedAmount = String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
+        LCD.writeCenteredText("${roundedAmount} euros", 0)
         LCD.newLine()
-        LCD.write("0${keyPressed}")
-        val centering2 = ("${amount}".length + 16)/2-1
-        LCD.cursor(1,centering2)
-        LCD.write("${amount}")
+        LCD.write("0${keyPressed}:")
+        LCD.writeCenteredText("${amount} total", 1)
+    }
+
+    fun writeStationCountInfo(title:String, bottomLeft:String, bottomRight:String){
+        LCD.clean()
+        LCD.writeCenteredText(title, 0)
+        LCD.newLine()
+        LCD.write("${bottomLeft}:")
+        LCD.writeBottomRight("${bottomRight} total", 1)
     }
 }
