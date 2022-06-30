@@ -63,7 +63,7 @@ class App() {
                 '4' -> resetCnt()
                 '5' -> shutdown()
                 KEY_NONE -> {
-                    TUI.writemMaintenanceOptions(M.maintenanceOptionsMenu(option))
+                    TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(option))
                     option ++
                     if(option > 5) {option = 1}
                 }
@@ -72,20 +72,19 @@ class App() {
     }
 
     private fun printTicket() {
-        TUI.writemMaintenanceOptions(M.maintenanceOptionsMenu(1))
+        TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(1))
     }
 
     private fun stationCnt() {
-        TUI.writemMaintenanceOptions(M.maintenanceOptionsMenu(2))
+        screenSelectCountStation()
     }
 
     private fun coinsCnt() {
-        TUI.writemMaintenanceOptions(M.maintenanceOptionsMenu(3))
         screenSelectCoin()
     }
 
     private fun resetCnt() {
-        TUI.writemMaintenanceOptions(M.maintenanceOptionsMenu(4))
+        TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(4))
         CoinDeposit.resetCounter()
         stations.resetCounter()
     }
@@ -238,6 +237,40 @@ class App() {
         }
         val amount = CoinDeposit.coinAmounts[coinFacialValue]
         TUI.WriteCoinInfo(coinFacialValue, amount, keyPressed)
+    }
+
+    fun screenSelectCountStation() {
+        screenCountStation('0')
+        var lastKey = '0'
+        while(!finish){
+            when (val k = TUI.waitKey(WAIT_SELECTION)){
+                KEY_NONE -> return
+                '#' -> screenMaintenance()
+                else -> {
+                    val twoKeys = lastKey.toString()+k.toString()
+                    screenCountStation(twoKeys)
+                    lastKey=k
+                }
+            }
+        }
+    }
+
+    fun screenCountStation(keyPressed : Char) {
+        val stationIdx = charToInt(keyPressed)
+        val lst = stations.getAllStations()
+        val station = lst[stationIdx]
+        selectedStation = station
+        selectedStation.id = stationIdx
+        TUI.writeStationCountInfo(station.name, stationIdx.toString(), station.counter.toString())
+    }
+
+    fun screenCountStation(keyPressed:String) {
+        val stationIdx = getStationIdx(keyPressed)
+        val lst = stations.getAllStations()
+        val station = lst[stationIdx]
+        selectedStation = station
+        selectedStation.id = stationIdx
+        TUI.writeStationCountInfo(station.name, stationIdx.toString(), station.counter.toString())
     }
 
 }
