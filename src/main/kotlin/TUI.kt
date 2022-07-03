@@ -50,6 +50,7 @@ object TUI {
         LCD.newLine()
         LCD.write("${bottomLeft}")
         LCD.writeBottomRight("${bottomRight}", 1)
+        //LCD.writeData(LCD.EUR_ADDRESS)
     }
 
     fun abortVendingLCD() {
@@ -61,10 +62,12 @@ object TUI {
         LCD.clean()
         LCD.write(title)
         LCD.newLine()
-        var bottomLeft = ""
-        if(roundtrip) bottomLeft = "1" else bottomLeft="0"
-        LCD.write(bottomLeft)
+        LCD.writeData(0) // write arrow down
+        if(roundtrip)
+            LCD.writeData(LCD.ARROW_DOWN_ADDRESS)  // write arrow up
+
         LCD.writeCenteredText(middle, 1)
+        LCD.writeData(LCD.EUR_ADDRESS)
     }
 
     fun writeTitleBottomLCD(title:String, bottomText:String) {
