@@ -5,12 +5,7 @@ import kotlin.math.roundToInt
 private const val COLS : Int = 16
 private const val PRICE_PRESENT = true
 
-//const val WAIT_SELECTION = 5000L // ms
-//data class Station(val price:Int, var counter:Int, val name:String)
-
 object TUI {
-
-    private var finish = false
 
     fun init() {
         LCD.init()
@@ -19,11 +14,8 @@ object TUI {
 
     fun writeInitialMenuLCD() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
-        finish = false
         LCD.clean()
-        LCD.write("Ticket to Ride")
-        //lcd.write("Press #")
-
+        writeCenteredText("Ticket to Ride",0)
         val currentDate = dateFormat.format(Date())
         writeDateLCD(currentDate.toString())
     }
@@ -36,18 +28,18 @@ object TUI {
         return KBD.waitKey(time)
     }
 
-    fun waitMaintenanceKey(time:Long):Char { // TESTE
+    fun waitMaintenanceKey(time:Long):Char {
         return KBD.waitKeyMaintenance(time)
     }
 
-    fun writeDateLCD(newcurrentDate:String) {
+    fun writeDateLCD(newCurrentDate:String) {
         LCD.newLine()
-        LCD.write(newcurrentDate.toString())
+        LCD.write(newCurrentDate)
     }
 
-    fun writeStationInfo(title:String, bottomLeft:String, bottomRight: Int) {
+    fun writeStationInfo(title: String, bottomLeft: String, bottomRight: Int) {
         LCD.clean()
-        LCD.write(title)
+        writeCenteredText(title,0)
         LCD.newLine()
         LCD.write(bottomLeft)
         val convertedPrice = writeInEuroFormat(bottomRight)
@@ -57,30 +49,26 @@ object TUI {
 
     fun abortVendingLCD() {
         LCD.clean()
-        LCD.write("Vending aborted")
+        writeCenteredText("Vending aborted", 0)
     }
 
-    fun payScreenLCD(title:String,roundtrip:Boolean,middle: Int) {
+    fun payScreenLCD(title: String,roundTrip: Boolean,middle: Int) {
         LCD.clean()
-        LCD.write(title)
+        writeCenteredText(title,0)
         LCD.newLine()
-        var bottomLeft = ""
-        if(roundtrip) bottomLeft = "1" else bottomLeft="0"
-        LCD.write(bottomLeft)
-        val formatedPrice = writeInEuroFormat(middle)
-        writeCenteredText(formatedPrice, 1)
+        LCD.writeData(LCD.ARROW_UP_ADDRESS)
+        if (roundTrip) LCD.writeData(LCD.ARROW_DOWN_ADDRESS)
+        val formatPrice = writeInEuroFormat(middle)
+        writeCenteredText(formatPrice, 1)
         LCD.writeData(0) // write arrow down
-        if(roundtrip)
-            LCD.writeData(LCD.ARROW_DOWN_ADDRESS)  // write arrow up
-        writeCenteredText(formatedPrice, 1)
+        writeCenteredText(formatPrice, 1)
         LCD.writeData(LCD.EUR_ADDRESS)
     }
 
     fun writeTitleBottomLCD(title:String, bottomText:String) {
         LCD.clean()
-        LCD.write(title)
-        LCD.newLine()
-        LCD.write(bottomText)
+        writeCenteredText(title,0)
+        writeCenteredText(bottomText,1)
     }
 
     fun writeMaintenanceOptions(bottomText: String){
@@ -97,10 +85,10 @@ object TUI {
         LCD.writeData(LCD.EUR_ADDRESS)
         LCD.newLine()
         LCD.write("0${keyPressed}:")
-        writeBottomRight("${amount}", 1, !PRICE_PRESENT)
+        writeBottomRight("$amount", 1, !PRICE_PRESENT)
     }
 
-    fun writeInEuroFormat(coinValue: Int) : String {
+    private fun writeInEuroFormat(coinValue: Int) : String {
         return String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
     }
 
@@ -112,13 +100,13 @@ object TUI {
         writeBottomRight(bottomRight, 1, !PRICE_PRESENT)
     }
 
-    fun writeCenteredText(text: String, line: Int) {
+    private fun writeCenteredText(text: String, line: Int) {
         val middle = (text.length + COLS)/2 - text.length
         LCD.cursor(line,middle)
         LCD.write(text)
     }
 
-    fun writeBottomRight(text: String, line: Int, price: Boolean) {
+    private fun writeBottomRight(text: String, line: Int, price: Boolean) {
         var bottomRight = COLS - text.length
         if(price) { bottomRight -= 1 }
         LCD.cursor(line,bottomRight)

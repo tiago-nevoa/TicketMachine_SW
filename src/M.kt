@@ -1,4 +1,3 @@
-import isel.leic.UsbPort
 
 //input Locations
 const val M_LOCATION : Int = 0x80
@@ -9,7 +8,6 @@ const val OPTION_4 = "4-Reset Cnt."
 const val OPTION_5 = "5-Shutdown"
 
 object M {
-
     // Inicia a classe
     fun init(){
       return
@@ -19,7 +17,6 @@ object M {
     fun maintenanceActive(): Boolean {
         return HAL.isBit(M_LOCATION)
     }
-
 
     fun maintenanceOptionsMenu(choice : Int) : String {
         return when(choice) {
