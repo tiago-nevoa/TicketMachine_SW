@@ -42,7 +42,7 @@ object KBD {
         return KEY_NONE
     }
 
-    fun waitKeyMaintenance(timeout: Long): Char { // TESTE
+    fun waitKeyMaintenance(timeout: Long): Char {
         val time = timeout + System.currentTimeMillis()
         while(time-System.currentTimeMillis() > 0) {
             val key = getKey()
