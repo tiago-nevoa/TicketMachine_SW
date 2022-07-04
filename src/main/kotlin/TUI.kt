@@ -124,4 +124,12 @@ object TUI {
         LCD.cursor(line,bottomRight)
         LCD.write(text)
     }
+
+    fun writeConfirmationMenu(text: String) {
+        LCD.clean()
+        writeCenteredText(text, 0)
+        LCD.newLine()
+        LCD.write("5-Yes")
+        writeBottomRight("other-No", 1, !PRICE_PRESENT)
+    }
 }
