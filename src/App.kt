@@ -86,13 +86,31 @@ object App {
     }
 
     private fun resetCnt() {
-        TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(4))
-        CoinDeposit.resetCounter()
-        stations.resetCounter()
+        TUI.writeConfirmationMenu("Reset Counters")
+        while(!finish){
+            when (TUI.waitKey(WAIT_SELECTION)){
+                '5' -> {
+                    CoinDeposit.resetCounter()
+                    stations.resetCounter()
+                    screenMaintenance()
+                }
+                else -> {
+                    screenMaintenance()
+                }
+            }
+        }
     }
 
     private fun shutdown() {
-        exitProcess(0)
+        TUI.writeConfirmationMenu("Shutdown")
+        while(!finish){
+            when (TUI.waitKey(WAIT_SELECTION)){
+                '5' -> exitProcess(0)
+                else -> {
+                    screenMaintenance()
+                }
+            }
+        }
     }
 
     /* ---------- Select Station Section ---------- */
@@ -123,15 +141,16 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
+        TUI.writeStationInfo(station.name, stationIdx, station.price)
     }
+    
     private fun screenStation(str:String) {
         val stationIdx = getStationIdx(str)
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
+        TUI.writeStationInfo(station.name, stationIdx, station.price)
     }
 
     private fun getStationIdx(str:String):Int {
@@ -275,7 +294,7 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationCountInfo(station.name, stationIdx.toString(), station.counter.toString())
+        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
     }
 
     private fun screenCountStation(keyPressed:String) {
@@ -284,7 +303,7 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationCountInfo(station.name, stationIdx.toString(), station.counter.toString())
+        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
     }
 
 }
