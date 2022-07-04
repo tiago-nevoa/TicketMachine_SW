@@ -4,8 +4,8 @@ import kotlin.math.roundToInt
 
 private const val COLS : Int = 16
 private const val PRICE_PRESENT = true
-private  const val TOP_LINE = 0
-private  const val BOTTOM_LINE = 1
+private const val TOP_LINE = 0
+private const val BOTTOM_LINE = 1
 
 object TUI {
 
@@ -58,8 +58,8 @@ object TUI {
         LCD.clean()
         writeCenteredText(title,TOP_LINE)
         LCD.newLine()
-        LCD.writeData(LCD.ARROW_UP_ADDRESS)
-        if (roundTrip) LCD.writeData(LCD.ARROW_DOWN_ADDRESS)
+        LCD.writeData(ARROW_UP_ADDRESS)
+        if (roundTrip) LCD.writeData(ARROW_DOWN_ADDRESS)
         val formatPrice = writeInEuroFormat(middle)
         writeCenteredText(formatPrice, BOTTOM_LINE)
         LCD.writeData(0) // write arrow down

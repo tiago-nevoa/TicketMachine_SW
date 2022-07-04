@@ -6,24 +6,21 @@ private const val CLEAR_DISPLAY : Int = 0x001
 private const val DISPLAY_OFF : Int = 0x008
 // 0x00E without cursor blink, 0x00F with cursor blink
 private const val DISPLAY_ON : Int = 0x00F
-
+// special characters address
+const val ARROW_UP_ADDRESS : Int = 0
+const val ARROW_DOWN_ADDRESS : Int = 1
+const val EUR_ADDRESS : Int = 2
 
 object LCD {
     private var frame : Int = 0b0
     private var cursorLine = 0x0
     private var cursorColumn = 0x0
-    const val ARROW_UP_ADDRESS : Int = 0
-    const val ARROW_DOWN_ADDRESS : Int = 1
-    const val EUR_ADDRESS : Int = 2
-    const val LOADING1_ADDRESS : Int = 3
-    const val LOADING2_ADDRESS : Int = 4
-    const val LOADING3_ADDRESS : Int = 5
-    const val LOADING4_ADDRESS : Int = 6
-
+ /*
     val customChar_Stickman = intArrayOf(
         0x0e, 0x0e, 0x04, 0x04, 0x1f, 0x04, 0x0a, 0x0a
     );
-    val customChar_ArrowUp = intArrayOf(
+  */
+    private val customChar_ArrowUp = intArrayOf(
         0b00000,
         0b00100,
         0b01110,
@@ -32,9 +29,9 @@ object LCD {
         0b00100,
         0b00100,
         0b00000
-    );
+    )
 
-    val customChar_ArrowDown = intArrayOf(
+    private val customChar_ArrowDown = intArrayOf(
         0b00000,
         0b00100,
         0b00100,
@@ -43,9 +40,9 @@ object LCD {
         0b01110,
         0b00100,
         0b00000
-    );
+    )
 
-    val customChar_Eur = intArrayOf(
+    private val customChar_Eur = intArrayOf(
         0b00111,
         0b01000,
         0b11110,
@@ -55,51 +52,6 @@ object LCD {
         0b00111,
         0b00000
     )
-
-    val customChar_Loading1 = intArrayOf(
-        0b00000,
-        0b00000,
-        0b00000,
-        0b11111,
-        0b00000,
-        0b00000,
-        0b00000,
-        0b00000
-    )
-
-    val customChar_Loading2 = intArrayOf(
-        0b00000,
-        0b10000,
-        0b01000,
-        0b00100,
-        0b00010,
-        0b00001,
-        0b00000,
-        0b00000
-    )
-
-    val customChar_Loading3 = intArrayOf(
-        0b00000,
-        0b00100,
-        0b00100,
-        0b00100,
-        0b00100,
-        0b00100,
-        0b00000,
-        0b00000
-    )
-
-    val customChar_Loading4 = intArrayOf(
-        0b00000,
-        0b00001,
-        0b00010,
-        0b00100,
-        0b01000,
-        0b10000,
-        0b00000,
-        0b00000
-    )
-
 
     private fun writeByteSerial(rs: Boolean, data: Int){
         //frame{data[0..7],RS}
@@ -140,12 +92,8 @@ object LCD {
         programCGRAM(customChar_ArrowUp,ARROW_UP_ADDRESS)
         programCGRAM(customChar_ArrowDown,ARROW_DOWN_ADDRESS)
         programCGRAM(customChar_Eur, EUR_ADDRESS)
-        programCGRAM(customChar_Loading1, LOADING1_ADDRESS)
-        programCGRAM(customChar_Loading2, LOADING2_ADDRESS)
-        programCGRAM(customChar_Loading3, LOADING3_ADDRESS)
-        programCGRAM(customChar_Loading4, LOADING4_ADDRESS)
     }
-    fun write(c: Char){
+    private fun write(c: Char){
         writeData(c.code)
     }
 
@@ -175,7 +123,7 @@ object LCD {
     }
 
     // save special characters to the CGRAM
-    fun programCGRAM(array:IntArray, address:Int) {
+    private fun programCGRAM(array:IntArray, address:Int) {
         writeCMD(0x40 + (address * 8)) //Send the Address of CGRAM
         array.forEach {
             writeData(it) //bytes of the pattern
