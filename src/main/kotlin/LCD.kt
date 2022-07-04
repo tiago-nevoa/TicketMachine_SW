@@ -174,20 +174,6 @@ object LCD {
         writeCMD(CLEAR_DISPLAY)
     }
 
-/*    fun writeCenteredText(text: String, line: Int) {
-        val textLength = text.length
-        val middle = (textLength + COLS)/2 - textLength
-        LCD.cursor(line,middle)
-        LCD.write(text)
-    }
-
-    fun writeBottomRight(text: String, line: Int) {
-        val bottomRight = COLS - text.length
-        LCD.cursor(line,bottomRight)
-        LCD.write(text)
-
-    }*/
-
     // save special characters to the CGRAM
     fun programCGRAM(array:IntArray, address:Int) {
         writeCMD(0x40 + (address * 8)) //Send the Address of CGRAM
