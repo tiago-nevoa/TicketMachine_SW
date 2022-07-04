@@ -1,8 +1,7 @@
 
 fun main() {
     // INICIALIZAR TUDO AQUI E PASSAR COMO ARGUMENTO?? - confirmar com prof
-    val app = App();
-    app.init()
+    App.init()
     //app.waitingScreen()
 /*
     //lastWrittenValue test

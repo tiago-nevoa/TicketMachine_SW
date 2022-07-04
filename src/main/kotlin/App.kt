@@ -6,7 +6,7 @@ const val WAIT_SELECTION = 5000L // ms
 const val WAIT_MAINTENANCE = 2000L // ms
 const val ORIGIN_STATION = 6
 
-class App() {
+object App {
     private var finish = false
     var stations = Stations()
     var selectedStation = Stations()
@@ -120,7 +120,7 @@ class App() {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price.toString())
+        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
     }
     private fun screenStation(str:String) {
         val stationIdx = getStationIdx(str)
@@ -128,7 +128,7 @@ class App() {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price.toString())
+        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
     }
 
     private fun getStationIdx(str:String):Int {
@@ -140,7 +140,7 @@ class App() {
     }
 
     private fun screenPayTicket() {
-        TUI.payScreenLCD(selectedStation.name, false, selectedStation.price.toString()) // default pay screen with roundtrip false
+        TUI.payScreenLCD(selectedStation.name, false, selectedStation.price) // default pay screen with roundtrip false
         while(!finish){
             if(CoinAcceptor.hasCoin()) {
                 val insertedCoin = CoinAcceptor.getCoinValue()
@@ -160,7 +160,7 @@ class App() {
                     CoinAcceptor.collectCoins() // collect and reset total coins
                     return
                 } else {
-                    TUI.payScreenLCD(selectedStation.name, selectedStation.roundtrip, subCoins.toString())
+                    TUI.payScreenLCD(selectedStation.name, selectedStation.roundtrip, subCoins)
                 }
             }
 
@@ -171,7 +171,7 @@ class App() {
                     alternateRoundTrip()
                     val priceToChange = selectedStation.price // TESTE
                     val finalPrice = updateTripPrice(priceToChange) // TESTE
-                    TUI.payScreenLCD(selectedStation.name, selectedStation.roundtrip, finalPrice.toString()) // TESTE
+                    TUI.payScreenLCD(selectedStation.name, selectedStation.roundtrip, finalPrice) // TESTE
                 }
                 '#' -> {
                     stations.roundTripReset()
