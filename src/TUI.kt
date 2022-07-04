@@ -67,9 +67,8 @@ object TUI {
 
     fun writeTitleBottomLCD(title:String, bottomText:String) {
         LCD.clean()
-        LCD.write(title)
-        LCD.newLine()
-        LCD.write(bottomText)
+        writeCenteredText(title,0)
+        writeCenteredText(bottomText,1)
     }
 
     fun writeMaintenanceOptions(bottomText: String){
