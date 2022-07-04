@@ -54,7 +54,7 @@ class App() {
 
     private fun screenMaintenance() {
         var option = 1
-        while(!finish){
+        while(M.maintenanceActive()){
             when (TUI.waitMaintenanceKey(WAIT_MAINTENANCE)){ // TESTE
                 // when (val k = tui.WaitKey(WAIT_MAINTENANCE)){
                 '1' -> printTicket()
@@ -69,6 +69,7 @@ class App() {
                 }
             }
         }
+        screenWaiting()
     }
 
     private fun printTicket() {
@@ -248,7 +249,7 @@ class App() {
            coinFacialValue = CoinDeposit.coinValues[keyPressed]!!
         }
         val amount = CoinDeposit.coinAmounts[coinFacialValue]
-        TUI.WriteCoinInfo(coinFacialValue, amount, keyPressed)
+        TUI.writeCoinInfo(coinFacialValue, amount, keyPressed)
     }
 
     fun screenSelectCountStation() {

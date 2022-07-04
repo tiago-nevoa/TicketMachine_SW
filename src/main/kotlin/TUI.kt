@@ -53,7 +53,7 @@ object TUI {
         LCD.newLine()
         LCD.write("${bottomLeft}")
         writeBottomRight("${bottomRight}", 1)
-        LCD.writeBottomRight("${bottomRight}", 1)
+        writeBottomRight("${bottomRight}", 1)
         //LCD.writeData(LCD.EUR_ADDRESS)
     }
 
@@ -73,7 +73,7 @@ object TUI {
         LCD.writeData(0) // write arrow down
         if(roundtrip)
             LCD.writeData(LCD.ARROW_DOWN_ADDRESS)  // write arrow up
-        LCD.writeCenteredText(middle, 1)
+        writeCenteredText(middle, 1)
         LCD.writeData(LCD.EUR_ADDRESS)
     }
 
@@ -97,7 +97,7 @@ object TUI {
         writeCenteredText("${roundedAmount} euros", 0)
         LCD.newLine()
         LCD.write("0${keyPressed}:")
-        writeCenteredText("${amount} total", 1)
+        writeBottomRight("${amount}", 1)
     }
 
     fun writeStationCountInfo(title:String, bottomLeft:String, bottomRight:String){
@@ -105,7 +105,7 @@ object TUI {
         writeCenteredText(title, 0)
         LCD.newLine()
         LCD.write("${bottomLeft}:")
-        writeBottomRight("${bottomRight} total", 1)
+        writeBottomRight("${bottomRight}", 1)
     }
 
     fun writeCenteredText(text: String, line: Int) {
