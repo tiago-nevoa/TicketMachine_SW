@@ -2,9 +2,9 @@ import isel.leic.UsbPort
 // visualizes the access to UsbPort system (HAL == Hardware Abstraction Layer)
 object HAL {
     // class initializer
-    var lastWrittenValue = 0b00000000
-    var initFlag = false
-    const val FULL_MASK = 0xFF
+    private var lastWrittenValue = 0b00000000
+    private var initFlag = false
+    private const val FULL_MASK = 0xFF
 
     fun init() {
         // we only init one time
