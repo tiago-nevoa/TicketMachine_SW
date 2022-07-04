@@ -44,7 +44,7 @@ object TUI {
         LCD.write(bottomLeft)
         val convertedPrice = writeInEuroFormat(bottomRight)
         writeBottomRight(convertedPrice, 1, PRICE_PRESENT)
-        LCD.writeData(LCD.EUR_ADDRESS)
+        LCD.writeData(EUR_ADDRESS)
     }
 
     fun abortVendingLCD() {
@@ -56,13 +56,13 @@ object TUI {
         LCD.clean()
         writeCenteredText(title,0)
         LCD.newLine()
-        LCD.writeData(LCD.ARROW_UP_ADDRESS)
-        if (roundTrip) LCD.writeData(LCD.ARROW_DOWN_ADDRESS)
+        LCD.writeData(ARROW_UP_ADDRESS)
+        if (roundTrip) LCD.writeData(ARROW_DOWN_ADDRESS)
         val formatPrice = writeInEuroFormat(middle)
         writeCenteredText(formatPrice, 1)
         LCD.writeData(0) // write arrow down
         writeCenteredText(formatPrice, 1)
-        LCD.writeData(LCD.EUR_ADDRESS)
+        LCD.writeData(EUR_ADDRESS)
     }
 
     fun writeTitleBottomLCD(title:String, bottomText:String) {
@@ -82,7 +82,7 @@ object TUI {
         LCD.clean()
         val roundedAmount = writeInEuroFormat(coinValue)
         writeCenteredText(roundedAmount, 0)
-        LCD.writeData(LCD.EUR_ADDRESS)
+        LCD.writeData(EUR_ADDRESS)
         LCD.newLine()
         LCD.write("0${keyPressed}:")
         writeBottomRight("$amount", 1, !PRICE_PRESENT)

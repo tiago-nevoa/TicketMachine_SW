@@ -4,7 +4,6 @@ class Stations {
     var price:Int = 0
     var counter:Int = 0
     var name:String = ""
-    // cada objecto nao tem ou nao deve ter um round trip
     var roundtrip:Boolean = false
     var id:Int = 0
 
