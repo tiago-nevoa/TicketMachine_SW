@@ -85,13 +85,31 @@ object App {
     }
 
     private fun resetCnt() {
-        TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(4))
-        CoinDeposit.resetCounter()
-        stations.resetCounter()
+        TUI.writeConfirmationMenu("Reset Counters")
+        while(!finish){
+            when (TUI.waitKey(WAIT_SELECTION)){
+                '5' -> {
+                    CoinDeposit.resetCounter()
+                    stations.resetCounter()
+                    screenMaintenance()
+                }
+                else -> {
+                    screenMaintenance()
+                }
+            }
+        }
     }
 
     private fun shutdown() {
-        exitProcess(0)
+        TUI.writeConfirmationMenu("Shutdown")
+        while(!finish){
+            when (TUI.waitKey(WAIT_SELECTION)){
+                '5' -> exitProcess(0)
+                else -> {
+                    screenMaintenance()
+                }
+            }
+        }
     }
 
     private fun screenSelectStation() {
@@ -122,6 +140,7 @@ object App {
         selectedStation.id = stationIdx
         TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
     }
+    
     private fun screenStation(str:String) {
         val stationIdx = getStationIdx(str)
         val lst = stations.getAllStations()
