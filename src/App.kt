@@ -138,7 +138,7 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
+        TUI.writeStationInfo(station.name, stationIdx, station.price)
     }
     
     private fun screenStation(str:String) {
@@ -147,7 +147,7 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
+        TUI.writeStationInfo(station.name, stationIdx, station.price)
     }
 
     private fun getStationIdx(str:String):Int {
@@ -293,7 +293,7 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationCountInfo(station.name, stationIdx.toString(), station.counter.toString())
+        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
     }
 
     fun screenCountStation(keyPressed:String) {
@@ -302,7 +302,7 @@ object App {
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationCountInfo(station.name, stationIdx.toString(), station.counter.toString())
+        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
     }
 
 }

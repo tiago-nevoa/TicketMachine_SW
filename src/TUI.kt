@@ -39,11 +39,12 @@ object TUI {
         LCD.write(newCurrentDate)
     }
 
-    fun writeStationInfo(title: String, bottomLeft: String, bottomRight: Int) {
+    fun writeStationInfo(title: String, bottomLeft: Int, bottomRight: Int) {
         LCD.clean()
         writeCenteredText(title,TOP_LINE)
         LCD.newLine()
-        LCD.write(bottomLeft)
+        val convertedIdx = writeTwoDigitsFormat(bottomLeft)
+        LCD.write(convertedIdx)
         val convertedPrice = writeInEuroFormat(bottomRight)
         writeBottomRight(convertedPrice, BOTTOM_LINE, PRICE_PRESENT)
         LCD.writeData(EUR_ADDRESS)
@@ -94,11 +95,16 @@ object TUI {
         return String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
     }
 
-    fun writeStationCountInfo(title:String, bottomLeft:String, bottomRight:String){
+    private fun writeTwoDigitsFormat(number : Int) : String {
+        return String.format("%02d", number)
+    }
+
+    fun writeStationCountInfo(title:String, bottomLeft:Int, bottomRight:String){
         LCD.clean()
         writeCenteredText(title, TOP_LINE)
         LCD.newLine()
-        LCD.write("${bottomLeft}:")
+        val convertedIdx = writeTwoDigitsFormat(bottomLeft)
+        LCD.write(convertedIdx)
         writeBottomRight(bottomRight, BOTTOM_LINE, !PRICE_PRESENT)
     }
 
