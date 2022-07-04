@@ -140,6 +140,7 @@ object App {
         selectedStation.id = stationIdx
         TUI.writeStationInfo(station.name, stationIdx.toString(), station.price)
     }
+    
     private fun screenStation(str:String) {
         val stationIdx = getStationIdx(str)
         val lst = stations.getAllStations()
