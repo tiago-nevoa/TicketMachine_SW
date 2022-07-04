@@ -4,7 +4,7 @@
 150;0;London
 125;0;Roma
 100;0;Berlin
-0;1;Moskva
+0;0;Moskva
 100;0;Bruxelles
 125;0;Amsterdam
 150;0;Kyiv
