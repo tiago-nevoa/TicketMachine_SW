@@ -53,6 +53,8 @@ object TUI {
         LCD.newLine()
         LCD.write("${bottomLeft}")
         writeBottomRight("${bottomRight}", 1)
+        LCD.writeBottomRight("${bottomRight}", 1)
+        //LCD.writeData(LCD.EUR_ADDRESS)
     }
 
     fun abortVendingLCD() {
@@ -68,6 +70,11 @@ object TUI {
         if(roundtrip) bottomLeft = "1" else bottomLeft="0"
         LCD.write(bottomLeft)
         writeCenteredText(middle, 1)
+        LCD.writeData(0) // write arrow down
+        if(roundtrip)
+            LCD.writeData(LCD.ARROW_DOWN_ADDRESS)  // write arrow up
+        LCD.writeCenteredText(middle, 1)
+        LCD.writeData(LCD.EUR_ADDRESS)
     }
 
     fun writeTitleBottomLCD(title:String, bottomText:String) {
@@ -84,7 +91,7 @@ object TUI {
         LCD.write(bottomText)
     }
 
-    fun WriteCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
+    fun writeCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
         LCD.clean()
         val roundedAmount = String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
         writeCenteredText("${roundedAmount} euros", 0)

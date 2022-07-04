@@ -190,7 +190,19 @@ class App() {
     private fun collectTicket() {
         TUI.writeTitleBottomLCD(selectedStation.name, "Collect Ticket")
         TicketDispenser.print(selectedStation.id,ORIGIN_STATION,selectedStation.roundtrip)
-        while(TicketDispenser.ticketCollected()) {/*wait*/}
+        //var animationIndex = LCD.LOADING1_ADDRESS
+
+        while(TicketDispenser.ticketCollected()) { /*wait*/ }
+
+        //while(TicketDispenser.ticketCollected()) { // we need this?
+        /*    TUI.writeTitleBottomLCD(selectedStation.name, "Collect Ticket")
+            LCD.writeData(animationIndex)
+            Thread.sleep(100)
+            animationIndex++
+            if(animationIndex == 4) animationIndex = 0 // reset animation
+         */
+            //if(!TicketDispenser.ticketCollected()) break
+       // }
         TUI.writeTitleBottomLCD("Thank you :)","Have a nice trip")
         // save and go back to main screen after collecting ticket
     }
