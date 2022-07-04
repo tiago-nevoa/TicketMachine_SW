@@ -2,6 +2,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
+private const val LINES : Int = 2
+private const val COLS : Int = 16
+
 //const val WAIT_SELECTION = 5000L // ms
 //data class Station(val price:Int, var counter:Int, val name:String)
 
@@ -49,6 +52,7 @@ object TUI {
         LCD.write(title)
         LCD.newLine()
         LCD.write("${bottomLeft}")
+        writeBottomRight("${bottomRight}", 1)
         LCD.writeBottomRight("${bottomRight}", 1)
         //LCD.writeData(LCD.EUR_ADDRESS)
     }
@@ -62,10 +66,13 @@ object TUI {
         LCD.clean()
         LCD.write(title)
         LCD.newLine()
+        var bottomLeft = ""
+        if(roundtrip) bottomLeft = "1" else bottomLeft="0"
+        LCD.write(bottomLeft)
+        writeCenteredText(middle, 1)
         LCD.writeData(0) // write arrow down
         if(roundtrip)
             LCD.writeData(LCD.ARROW_DOWN_ADDRESS)  // write arrow up
-
         LCD.writeCenteredText(middle, 1)
         LCD.writeData(LCD.EUR_ADDRESS)
     }
@@ -84,20 +91,33 @@ object TUI {
         LCD.write(bottomText)
     }
 
-    fun WriteCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
+    fun writeCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
         LCD.clean()
         val roundedAmount = String.format("%.2f", (coinValue.toFloat()).roundToInt() / 100.0)
-        LCD.writeCenteredText("${roundedAmount} euros", 0)
+        writeCenteredText("${roundedAmount} euros", 0)
         LCD.newLine()
         LCD.write("0${keyPressed}:")
-        LCD.writeCenteredText("${amount} total", 1)
+        writeCenteredText("${amount} total", 1)
     }
 
     fun writeStationCountInfo(title:String, bottomLeft:String, bottomRight:String){
         LCD.clean()
-        LCD.writeCenteredText(title, 0)
+        writeCenteredText(title, 0)
         LCD.newLine()
         LCD.write("${bottomLeft}:")
-        LCD.writeBottomRight("${bottomRight} total", 1)
+        writeBottomRight("${bottomRight} total", 1)
+    }
+
+    fun writeCenteredText(text: String, line: Int) {
+        val textLength = text.length
+        val middle = (textLength + COLS)/2 - textLength
+        LCD.cursor(line,middle)
+        LCD.write(text)
+    }
+
+    fun writeBottomRight(text: String, line: Int) {
+        val bottomRight = COLS - text.length
+        LCD.cursor(line,bottomRight)
+        LCD.write(text)
     }
 }
