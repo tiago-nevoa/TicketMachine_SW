@@ -5,6 +5,8 @@ import kotlin.system.exitProcess
 const val WAIT_SELECTION = 5000L // ms
 const val WAIT_MAINTENANCE = 2000L // ms
 const val ORIGIN_STATION = 6
+const val MENU_INITIAL_POSITION = 0
+const val ARROW = true
 
 object App {
     private var finish = false
@@ -36,7 +38,7 @@ object App {
                 }
 
                 if (TUI.getKey() == '#') {
-                    screenSelectStation()
+                    screenSelectStation(MENU_INITIAL_POSITION)
                     TUI.writeInitialMenuLCD()
                 }
 
@@ -114,27 +116,64 @@ object App {
     }
 
     /* ---------- Select Station Section ---------- */
-    private fun screenSelectStation() {
+    private fun screenSelectStation(lastKey : Int) {
         // show the first station by default
-        screenStation('0')
-        var lastKey = '0'
+        screenStation(lastKey.toString(), !ARROW)
+        var lastKey = lastKey
         while(!finish){
             when (val k = TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
-                '*' -> {}
+                '*' -> {
+                    screenSelectStationArrows(lastKey)
+                    return
+                }
                 '#' -> {
-                    screenPayTicket()
+                    if (lastKey != ORIGIN_STATION) screenPayTicket()
+                    else continue
                     return
                 }
                 else -> {
                     val twoKeys = lastKey.toString()+k.toString()
-                    screenStation(twoKeys)
-                    lastKey=k
+                    screenStation(twoKeys,!ARROW)
+                    lastKey= charToInt(k)
                 }
             }
         }
     }
 
+    /* ---------- Select Station Section with Arrows ---------- */
+    private fun screenSelectStationArrows(lastKey : Int) {
+        screenStation(lastKey.toString(), ARROW)
+        var lastKey = lastKey
+        while(!finish){
+            when (val k = TUI.waitKey(WAIT_SELECTION)){
+                KEY_NONE -> return
+                '*' -> {
+                    screenSelectStation(lastKey)
+                    return
+                }
+                '2' -> {
+                    lastKey++
+                    if (lastKey > 15) lastKey = 0
+                    screenStation(lastKey.toString(),ARROW)
+                }
+                '8' -> {
+                    lastKey--
+                    if (lastKey < 0) lastKey = 15
+                    screenStation(lastKey.toString(),ARROW)
+                }
+                '#' -> {
+                    if (lastKey != ORIGIN_STATION) screenPayTicket()
+                    else continue
+                    return
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+    /* we dont use maybe delete <----------------------- !!!!!
     private fun screenStation(k:Char) {
         val stationIdx = charToInt(k)
         val lst = stations.getAllStations()
@@ -143,14 +182,14 @@ object App {
         selectedStation.id = stationIdx
         TUI.writeStationInfo(station.name, stationIdx, station.price)
     }
-    
-    private fun screenStation(str:String) {
+    */
+    private fun screenStation(str: String, arrow : Boolean) {
         val stationIdx = getStationIdx(str)
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx, station.price)
+        TUI.writeStationInfo(station.name, stationIdx, station.price, arrow)
     }
 
     private fun getStationIdx(str:String):Int {

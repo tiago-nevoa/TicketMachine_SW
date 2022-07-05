@@ -39,13 +39,17 @@ object TUI {
         LCD.write(newCurrentDate)
     }
 
-    fun writeStationInfo(title: String, bottomLeft: Int, bottomRight: Int) {
+    fun writeStationInfo(title: String, bottomLeft: Int, bottomRight: Int, arrow: Boolean) {
         LCD.clean()
         writeCenteredText(title,TOP_LINE)
         LCD.newLine()
         val convertedIdx = writeTwoDigitsFormat(bottomLeft)
         LCD.write(convertedIdx)
-        LCD.write(':')
+        if (arrow) {
+            LCD.writeData(ARROW_UP_ADDRESS)
+            LCD.writeData(ARROW_DOWN_ADDRESS)
+        }
+        else LCD.write(':')
         val convertedPrice = writeInEuroFormat(bottomRight)
         writeBottomRight(convertedPrice, BOTTOM_LINE, PRICE_PRESENT)
         LCD.writeData(EUR_ADDRESS)
