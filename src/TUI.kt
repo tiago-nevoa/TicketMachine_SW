@@ -45,6 +45,7 @@ object TUI {
         LCD.newLine()
         val convertedIdx = writeTwoDigitsFormat(bottomLeft)
         LCD.write(convertedIdx)
+        LCD.write(':')
         val convertedPrice = writeInEuroFormat(bottomRight)
         writeBottomRight(convertedPrice, BOTTOM_LINE, PRICE_PRESENT)
         LCD.writeData(EUR_ADDRESS)
@@ -105,6 +106,7 @@ object TUI {
         LCD.newLine()
         val convertedIdx = writeTwoDigitsFormat(bottomLeft)
         LCD.write(convertedIdx)
+        LCD.write(':')
         writeBottomRight(bottomRight, BOTTOM_LINE, !PRICE_PRESENT)
     }
 

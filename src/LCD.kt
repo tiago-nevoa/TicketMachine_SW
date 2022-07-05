@@ -93,7 +93,7 @@ object LCD {
         programCGRAM(customChar_ArrowDown,ARROW_DOWN_ADDRESS)
         programCGRAM(customChar_Eur, EUR_ADDRESS)
     }
-    private fun write(c: Char){
+    fun write(c: Char){
         writeData(c.code)
     }
 
