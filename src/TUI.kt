@@ -86,13 +86,18 @@ object TUI {
         LCD.write(bottomText)
     }
 
-    fun writeCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char){
+    fun writeCoinInfo(coinValue : Int, amount :Int?, keyPressed: Char, arrow: Boolean){
         LCD.clean()
         val roundedAmount = writeInEuroFormat(coinValue)
         writeCenteredText(roundedAmount, TOP_LINE)
         LCD.writeData(EUR_ADDRESS)
         LCD.newLine()
-        LCD.write("0${keyPressed}:")
+        LCD.write("0${keyPressed}")
+        if (arrow) {
+            LCD.writeData(ARROW_UP_ADDRESS)
+            LCD.writeData(ARROW_DOWN_ADDRESS)
+        }
+        else LCD.write(':')
         writeBottomRight("$amount", BOTTOM_LINE, !PRICE_PRESENT)
     }
 
@@ -104,13 +109,17 @@ object TUI {
         return String.format("%02d", number)
     }
 
-    fun writeStationCountInfo(title:String, bottomLeft:Int, bottomRight:String){
+    fun writeStationCountInfo(title:String, bottomLeft:Int, bottomRight:String, arrow: Boolean){
         LCD.clean()
         writeCenteredText(title, TOP_LINE)
         LCD.newLine()
         val convertedIdx = writeTwoDigitsFormat(bottomLeft)
         LCD.write(convertedIdx)
-        LCD.write(':')
+        if (arrow) {
+            LCD.writeData(ARROW_UP_ADDRESS)
+            LCD.writeData(ARROW_DOWN_ADDRESS)
+        }
+        else LCD.write(':')
         writeBottomRight(bottomRight, BOTTOM_LINE, !PRICE_PRESENT)
     }
 

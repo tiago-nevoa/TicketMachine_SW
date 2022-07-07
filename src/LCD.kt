@@ -15,11 +15,7 @@ object LCD {
     private var frame : Int = 0b0
     private var cursorLine = 0x0
     private var cursorColumn = 0x0
- /*
-    val customChar_Stickman = intArrayOf(
-        0x0e, 0x0e, 0x04, 0x04, 0x1f, 0x04, 0x0a, 0x0a
-    );
-  */
+
     private val customChar_ArrowUp = intArrayOf(
         0b00000,
         0b00100,

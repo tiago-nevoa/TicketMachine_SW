@@ -76,15 +76,17 @@ object App {
     }
 
     private fun printTicket() {
+
         TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(1))
+
     }
 
     private fun stationCnt() {
-        screenSelectCountStation()
+        screenSelectCountStation(MENU_INITIAL_POSITION)
     }
 
     private fun coinsCnt() {
-        screenSelectCoin()
+        screenSelectCoin(MENU_INITIAL_POSITION)
     }
 
     private fun resetCnt() {
@@ -146,7 +148,7 @@ object App {
         screenStation(lastKey.toString(), ARROW)
         var lastKey = lastKey
         while(!finish){
-            when (val k = TUI.waitKey(WAIT_SELECTION)){
+            when (TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
                 '*' -> {
                     screenSelectStation(lastKey)
@@ -183,7 +185,7 @@ object App {
         TUI.writeStationInfo(station.name, stationIdx, station.price)
     }
     */
-    private fun screenStation(str: String, arrow : Boolean) {
+    private fun screenStation(str: String, arrow: Boolean) {
         val stationIdx = getStationIdx(str)
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
@@ -233,7 +235,7 @@ object App {
 
             //when (val k = tui.WaitKey(WAIT_SELECTION)){
             // no timeout
-            when (val k = TUI.getKey()){
+            when (TUI.getKey()){
                 //KEY_NONE -> return
                 '0' -> {
                     alternateRoundTrip()
@@ -284,22 +286,77 @@ object App {
         return c.code - '0'.code
     }
 
-    private fun screenSelectCoin() {
-        screenCoinAmount('0')
+    private fun screenSelectCoin(lastKey: Int) {
+        screenCoinAmount(lastKey.toChar(), !ARROW)
+        var lastKey = lastKey
+        print("Last Key on screenSelectCoin:")
+        println(lastKey)
         while(!finish){
             when (val k = TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
-                '#' -> screenMaintenance()
+                '*' -> {
+                    print("Last Key on screenSelectCoin *:")
+                    println(lastKey)
+                    screenSelectCoinArrow(lastKey)
+                    return
+                }
+                '#' -> {
+                    screenMaintenance()
+                    return
+                }
                 else -> {
-                    screenCoinAmount(k)
+                    screenCoinAmount(k, !ARROW)
+                    lastKey = charToInt(k)
                 }
             }
         }
     }
 
-    private fun screenCoinAmount(keyPressed : Char) {
+    private fun screenSelectCoinArrow(lastKey: Int) {
+        screenCoinAmount(lastKey.toChar(), ARROW)
+        var lastKey : Int = lastKey
+        while(!finish){
+           screenCoinAmount(lastKey.toChar(), ARROW)
+            when (TUI.waitKey(WAIT_SELECTION)){
+                KEY_NONE -> return
+                '*' -> {
+                    screenSelectCoin(lastKey)
+                    return
+                }
+                '2' -> {
+                    lastKey++
+                    print("Last Key on screenSelectCoinArrow ++:")
+                    println(lastKey)
+                    if (lastKey > 5) lastKey = 0
+                    print("Last Key on screenSelectCoinArrow ++ if:")
+                    println(lastKey)
+                    screenCoinAmount(lastKey.toChar(), ARROW)
+                }
+                '8' -> {
+                    lastKey--
+                    print("Last Key on screenSelectCoinArrow --:")
+                    println(lastKey)
+                    if (lastKey < 0) lastKey = 5
+                    print("Last Key on screenSelectCoinArrow -- if:")
+                    println(lastKey)
+                    screenCoinAmount(lastKey.toChar(), ARROW)
+                }
+                '#' -> {
+                    screenMaintenance()
+                    return
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun screenCoinAmount(keyPressed : Char, arrow: Boolean) {
         var keyPressed = keyPressed
-        var coinFacialValue : Int = 0
+        print("Last Key on SelectCoin:")
+        println(keyPressed.code)
+        var coinFacialValue = 0
         if(keyPressed !in '1'..'5') {
             coinFacialValue = 5
             keyPressed = '0'
@@ -308,26 +365,58 @@ object App {
            coinFacialValue = CoinDeposit.coinValues[keyPressed]!!
         }
         val amount = CoinDeposit.coinAmounts[coinFacialValue]
-        TUI.writeCoinInfo(coinFacialValue, amount, keyPressed)
+        TUI.writeCoinInfo(coinFacialValue, amount, keyPressed, arrow)
     }
 
-    private fun screenSelectCountStation() {
-        screenCountStation('0')
-        var lastKey = '0'
+    private fun screenSelectCountStation(lastKey : Int) {
+        screenCountStation(lastKey.toString(), !ARROW)
+        var lastKey = lastKey
         while(!finish){
             when (val k = TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
+                '*' -> {
+                    screenSelectCountStationARROW(lastKey)
+                    return
+                }
                 '#' -> screenMaintenance()
                 else -> {
                     val twoKeys = lastKey.toString()+k.toString()
-                    screenCountStation(twoKeys)
-                    lastKey=k
+                    screenCountStation(twoKeys, !ARROW)
+                    lastKey= charToInt(k)
                 }
             }
         }
     }
 
-    private fun screenCountStation(keyPressed : Char) {
+    private fun screenSelectCountStationARROW(lastKey: Int) {
+        screenCountStation(lastKey.toString(), ARROW)
+        var lastKey = lastKey
+        while(!finish){
+            when (TUI.waitKey(WAIT_SELECTION)){
+                KEY_NONE -> return
+                '*' -> {
+                    screenSelectCountStation(lastKey)
+                    return
+                }
+                '2' -> {
+                    lastKey++
+                    if (lastKey > 15) lastKey = 0
+                    screenCountStation(lastKey.toString(), ARROW)
+                }
+                '8' -> {
+                    lastKey--
+                    if (lastKey < 0) lastKey = 15
+                    screenCountStation(lastKey.toString(), ARROW)
+                }
+                '#' -> screenMaintenance()
+                else -> {
+
+                }
+            }
+        }
+    }
+/*
+    private fun screenCountStation(keyPressed : Char {
         val stationIdx = charToInt(keyPressed)
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
@@ -335,14 +424,14 @@ object App {
         selectedStation.id = stationIdx
         TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
     }
-
-    private fun screenCountStation(keyPressed:String) {
+*/
+    private fun screenCountStation(keyPressed: String ,arrow : Boolean) {
         val stationIdx = getStationIdx(keyPressed)
         val lst = stations.getAllStations()
         val station = lst[stationIdx]
         selectedStation = station
         selectedStation.id = stationIdx
-        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
+        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString(), arrow)
     }
 
 }
