@@ -73,6 +73,16 @@ object TUI {
         LCD.writeData(EUR_ADDRESS)
     }
 
+    fun printScreenLCD(title: String,roundTrip: Boolean) {
+        LCD.clean()
+        writeCenteredText(title,TOP_LINE)
+        LCD.newLine()
+        LCD.writeData(ARROW_UP_ADDRESS)
+        if (roundTrip) LCD.writeData(ARROW_DOWN_ADDRESS)
+        else LCD.write(" ")
+        LCD.write("*- to Print")
+    }
+
     fun writeTitleBottomLCD(title:String, bottomText:String) {
         LCD.clean()
         writeCenteredText(title,TOP_LINE)

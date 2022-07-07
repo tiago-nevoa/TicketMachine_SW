@@ -7,6 +7,7 @@ const val WAIT_MAINTENANCE = 2000L // ms
 const val ORIGIN_STATION = 6
 const val MENU_INITIAL_POSITION = 0
 const val ARROW = true
+const val PRINT = true
 
 object App {
     private var finish = false
@@ -36,9 +37,9 @@ object App {
                 if (M.maintenanceActive()) {
                     screenMaintenance()
                 }
-
-                if (TUI.getKey() == '#') {
-                    screenSelectStation(MENU_INITIAL_POSITION)
+                val key = TUI.getKey()
+                if (key == '#') {
+                    screenSelectStation(MENU_INITIAL_POSITION, !PRINT)
                     TUI.writeInitialMenuLCD()
                 }
 
@@ -76,8 +77,8 @@ object App {
     }
 
     private fun printTicket() {
-
-        TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(1))
+        screenSelectStation(MENU_INITIAL_POSITION, PRINT)
+        //TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(1))
 
     }
 
@@ -118,7 +119,7 @@ object App {
     }
 
     /* ---------- Select Station Section ---------- */
-    private fun screenSelectStation(lastKey : Int) {
+    private fun screenSelectStation(lastKey : Int, isPrint : Boolean) {
         // show the first station by default
         screenStation(lastKey.toString(), !ARROW)
         var lastKey = lastKey
@@ -126,12 +127,13 @@ object App {
             when (val k = TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
                 '*' -> {
-                    screenSelectStationArrows(lastKey)
+                    screenSelectStationArrows(lastKey, isPrint)
                     return
                 }
                 '#' -> {
-                    if (lastKey != ORIGIN_STATION) screenPayTicket()
-                    else continue
+                    if(lastKey == ORIGIN_STATION) continue
+                    if (isPrint) screenPrintTicket()
+                    else screenPayTicket()
                     return
                 }
                 else -> {
@@ -144,14 +146,14 @@ object App {
     }
 
     /* ---------- Select Station Section with Arrows ---------- */
-    private fun screenSelectStationArrows(lastKey : Int) {
+    private fun screenSelectStationArrows(lastKey : Int, isPrint: Boolean) {
         screenStation(lastKey.toString(), ARROW)
         var lastKey = lastKey
         while(!finish){
             when (TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
                 '*' -> {
-                    screenSelectStation(lastKey)
+                    screenSelectStation(lastKey, isPrint)
                     return
                 }
                 '2' -> {
@@ -165,8 +167,9 @@ object App {
                     screenStation(lastKey.toString(),ARROW)
                 }
                 '#' -> {
-                    if (lastKey != ORIGIN_STATION) screenPayTicket()
-                    else continue
+                    if(lastKey == ORIGIN_STATION) continue
+                    if (isPrint) screenPrintTicket()
+                    else screenPayTicket()
                     return
                 }
                 else -> {
@@ -248,6 +251,36 @@ object App {
                     TUI.abortVendingLCD()
                     CoinAcceptor.ejectCoins()
                     CoinDeposit.readFile()
+                    return
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+
+        }
+    }
+
+    /* ---------- Print Ticket Section ---------- */
+    private fun screenPrintTicket() {
+        // default pay screen with roundtrip false
+        TUI.printScreenLCD(selectedStation.name, false)
+        while(!finish){
+            //when (val k = tui.WaitKey(WAIT_SELECTION)){
+            // no timeout
+            when (TUI.getKey()){
+                //KEY_NONE -> return
+                '0' -> {
+                    alternateRoundTrip()
+                    TUI.printScreenLCD(selectedStation.name, selectedStation.roundtrip)
+                }
+                '*' -> {
+                    collectTicket()
+                    return
+                }
+                '#' -> {
+                    stations.roundTripReset()
+                    TUI.abortVendingLCD()
                     return
                 }
                 else -> {
