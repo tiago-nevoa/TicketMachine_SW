@@ -17,8 +17,7 @@ object KBD {
     }
     //  Implements the serial interaction with the Key Transmitter
     private fun getKeySerial(): Char {
-        var key : Int = NONE
-        key += KeyReceiver.rcv()
+        val key = KeyReceiver.rcv()
 
         // when invalid keyCode key = -1
         if (key < 0 || key > 11) return KEY_NONE
