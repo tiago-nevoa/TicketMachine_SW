@@ -77,8 +77,6 @@ object App {
 
     private fun printTicket() {
         screenSelectStation(MENU_INITIAL_POSITION, PRINT)
-        //TUI.writeMaintenanceOptions(M.maintenanceOptionsMenu(1))
-
     }
 
     private fun stationCnt() {
@@ -177,16 +175,7 @@ object App {
             }
         }
     }
-    /* we dont use maybe delete <----------------------- !!!!!
-    private fun screenStation(k:Char) {
-        val stationIdx = charToInt(k)
-        val lst = stations.getAllStations()
-        val station = lst[stationIdx]
-        selectedStation = station
-        selectedStation.id = stationIdx
-        TUI.writeStationInfo(station.name, stationIdx, station.price)
-    }
-    */
+
     private fun screenStation(str: String, arrow: Boolean) {
         val stationIdx = getStationIdx(str)
         val lst = stations.getAllStations()
@@ -215,14 +204,13 @@ object App {
                 CoinDeposit.coinAmounts[insertedCoin] = CoinDeposit.coinAmounts[insertedCoin]?.plus(1)
                 CoinAcceptor.totalCoins += insertedCoin
                 CoinAcceptor.acceptCoin()
-                //selectedStation.price -= insertedCoin
                 var priceToCharge = selectedStation.price
-                if(selectedStation.roundtrip) { priceToCharge = selectedStation.price * 2}
+                if(selectedStation.roundtrip) priceToCharge = selectedStation.price * 2
                 val subCoins = priceToCharge - CoinAcceptor.totalCoins
                 if(subCoins <= 0) {
                     collectTicket()
                     selectedStation.counter++
-                    if(selectedStation.roundtrip) { allStations[ORIGIN_STATION].counter++ }
+                    if(selectedStation.roundtrip) allStations[ORIGIN_STATION].counter++
                     // save stations to txt. Fazemos aqui e nao no shutdown porque se a energia for abaixo perdiam-se os valores todos
                     stations.updateToFile()
                     // save coins to txt
@@ -235,10 +223,7 @@ object App {
                 }
             }
 
-            //when (val k = tui.WaitKey(WAIT_SELECTION)){
-            // no timeout
             when (TUI.getKey()){
-                //KEY_NONE -> return
                 '0' -> {
                     alternateRoundTrip()
                     val priceToChange = selectedStation.price
@@ -265,10 +250,7 @@ object App {
         // default pay screen with roundtrip false
         TUI.printScreenLCD(selectedStation.name, false)
         while(!finish){
-            //when (val k = tui.WaitKey(WAIT_SELECTION)){
-            // no timeout
             when (TUI.getKey()){
-                //KEY_NONE -> return
                 '0' -> {
                     alternateRoundTrip()
                     TUI.printScreenLCD(selectedStation.name, selectedStation.roundtrip)
@@ -321,14 +303,10 @@ object App {
     private fun screenSelectCoin(lastKey: Int) {
         screenCoinAmount(lastKey.toChar(), !ARROW)
         var lastKey = lastKey
-        print("Last Key on screenSelectCoin:")
-        println(lastKey)
         while(!finish){
             when (val k = TUI.waitKey(WAIT_SELECTION)){
                 KEY_NONE -> return
                 '*' -> {
-                    print("Last Key on screenSelectCoin *:")
-                    println(lastKey)
                     screenSelectCoinArrow(lastKey)
                     return
                 }
@@ -357,20 +335,12 @@ object App {
                 }
                 '2' -> {
                     lastKey++
-                    print("Last Key on screenSelectCoinArrow ++:")
-                    println(lastKey)
                     if (lastKey > 5) lastKey = 0
-                    print("Last Key on screenSelectCoinArrow ++ if:")
-                    println(lastKey)
                     screenCoinAmount(lastKey.toChar(), ARROW)
                 }
                 '8' -> {
                     lastKey--
-                    print("Last Key on screenSelectCoinArrow --:")
-                    println(lastKey)
                     if (lastKey < 0) lastKey = 5
-                    print("Last Key on screenSelectCoinArrow -- if:")
-                    println(lastKey)
                     screenCoinAmount(lastKey.toChar(), ARROW)
                 }
                 '#' -> {
@@ -378,7 +348,7 @@ object App {
                     return
                 }
                 else -> {
-
+                    // do nothing
                 }
             }
         }
@@ -386,8 +356,6 @@ object App {
 
     private fun screenCoinAmount(keyPressed : Char, arrow: Boolean) {
         var keyPressed = keyPressed
-        print("Last Key on SelectCoin:")
-        println(keyPressed.code)
         var coinFacialValue = 0
         if(keyPressed !in '1'..'5') {
             coinFacialValue = 5
@@ -447,16 +415,7 @@ object App {
             }
         }
     }
-/*
-    private fun screenCountStation(keyPressed : Char {
-        val stationIdx = charToInt(keyPressed)
-        val lst = stations.getAllStations()
-        val station = lst[stationIdx]
-        selectedStation = station
-        selectedStation.id = stationIdx
-        TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString())
-    }
-*/
+
     private fun screenCountStation(keyPressed: String ,arrow : Boolean) {
         val stationIdx = getStationIdx(keyPressed)
         val lst = stations.getAllStations()
@@ -465,5 +424,4 @@ object App {
         selectedStation.id = stationIdx
         TUI.writeStationCountInfo(station.name, stationIdx, station.counter.toString(), arrow)
     }
-
 }
