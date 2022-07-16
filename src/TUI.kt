@@ -68,8 +68,6 @@ object TUI {
         if (roundTrip) LCD.writeData(ARROW_DOWN_ADDRESS)
         val formatPrice = writeInEuroFormat(middle)
         writeCenteredText(formatPrice, BOTTOM_LINE)
-        LCD.writeData(0) // write arrow down
-        writeCenteredText(formatPrice, BOTTOM_LINE)
         LCD.writeData(EUR_ADDRESS)
     }
 
