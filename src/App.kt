@@ -60,7 +60,6 @@ object App {
         var option = 1
         while(M.maintenanceActive()){
             when (TUI.waitMaintenanceKey(WAIT_MAINTENANCE)){
-                // when (val k = tui.WaitKey(WAIT_MAINTENANCE)){
                 '1' -> printTicket()
                 '2' -> stationCnt()
                 '3' -> coinsCnt()
