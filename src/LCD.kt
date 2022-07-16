@@ -124,7 +124,8 @@ object LCD {
         array.forEach {
             writeData(it) //bytes of the pattern
         }
-        writeCMD(0x80) //Place cursor
+        cursor(0,0)
+        //writeCMD(0x80) //Place cursor
     }
 
 }
