@@ -8,7 +8,7 @@ const val ACCEPT_LOCATION : Int = 0x20
 const val COLLECT_LOCATION : Int = 0x40
 const val EJECT_LOCATION : Int = 0x80
 
-val COIN_TABLE : Array<Int> = arrayOf(5,10,20,50,100,200,0,0)
+val COIN_TABLE : Array<Int> = arrayOf(5,10,20,50,100,200,0,500)
 
 // Implementa a interface com o moedeiro.
 object CoinAcceptor {

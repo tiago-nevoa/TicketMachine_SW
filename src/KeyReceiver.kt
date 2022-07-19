@@ -30,8 +30,7 @@ object KeyReceiver {
     fun rcv(): Int {
         // protocolo inicio leitura
         if(!HAL.isBit((RXD_LOCATION))) {
-            RXD = 0
-            RXCLK = 1
+            HAL.clrBits(RXCLK_LOCATION)
             HAL.setBits(RXCLK_LOCATION)
             // Leitura Key Code
             frameCounter = 0
@@ -39,30 +38,26 @@ object KeyReceiver {
             while (frameCounter in 0 until KEY_FRAME_SIZE) {
                 RXD = if (HAL.isBit(RXD_LOCATION)) 1 else 0
                 keyFrame = keyFrame or (RXD shl frameCounter)
-                RXCLK = 0
                 HAL.clrBits(RXCLK_LOCATION)
-                RXCLK = 1
                 HAL.setBits(RXCLK_LOCATION)
                 frameCounter++
             }
+            HAL.clrBits(RXCLK_LOCATION)
 
             // Verificar o correcto protocolgo da trama
-            if (keyFrame and FRAME_START_BIT_LOCATION == 0)
+            if (keyFrame and FRAME_START_BIT_LOCATION == 0) {
+                println("Frame error 1")
                 return -1 // we need solve this error maybe init to know stage
-            else if (keyFrame and FRAME_STOP_BIT_LOCATION != 0)
-                return -1  // we need solve this error maybe init to know stage
-            else keyFrame = (keyFrame and FRAME_KEY_CODE_LOCATION) shr 1
 
-            // Check TxD = 1 to fall clock
-            val time = 1000 + System.currentTimeMillis()
-            while (!HAL.isBit(RXD_LOCATION)) {
-                /*wait*/
-                if (time - System.currentTimeMillis() < 0)
-                    return -1 // we need solve this error maybe init to know stage
             }
-            RXD = 1
-            RXCLK = 0
-            HAL.clrBits(RXCLK_LOCATION)
+            else if (keyFrame and FRAME_STOP_BIT_LOCATION != 0)
+            {
+                println("Frame error 2")
+                return -1 // we need solve this error maybe init to know stage
+
+            }
+                //return -1  // we need solve this error maybe init to know stage
+            else keyFrame = (keyFrame and FRAME_KEY_CODE_LOCATION) shr 1
 
             // return key code
             return keyFrame

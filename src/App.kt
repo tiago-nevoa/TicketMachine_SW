@@ -361,7 +361,7 @@ object App {
             coinFacialValue = 5
             keyPressed = '0'
         }
-            else {
+        else {
            coinFacialValue = CoinDeposit.coinValues[keyPressed]!!
         }
         val amount = CoinDeposit.coinAmounts[coinFacialValue]
